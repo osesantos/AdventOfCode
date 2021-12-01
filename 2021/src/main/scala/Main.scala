@@ -1,2 +1,1 @@
-@main def main() = day2()
-
+@main def main() = day1()
