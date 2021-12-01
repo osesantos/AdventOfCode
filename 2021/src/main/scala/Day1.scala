@@ -1,4 +1,4 @@
-def day1() =
+def day1(): Unit =
   val input = "day1".getInput.map(s => s.toInt)
   day1_1(input)
   day1_2(input)
