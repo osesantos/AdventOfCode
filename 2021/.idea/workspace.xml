@@ -5,38 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3c80242d-2c3a-4a2d-9300-7353ce40d940" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/libraries/sbt__com_novocode_junit_interface_0_11_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/libraries/sbt__junit_junit_4_11_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/libraries/sbt__org_hamcrest_hamcrest_core_1_3_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/libraries/sbt__org_scala_lang_scala3_library_3_3_1_0_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/libraries/sbt__org_scala_lang_scala_library_2_13_6_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/libraries/sbt__org_scala_sbt_test_interface_1_0_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/modules/2020-build.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/modules/2020.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/sbt.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/scala_compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/src/main/input/day1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/src/main/scala/Day1.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../2020/src/main/scala/Utils.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.bsp/sbt.json" beforeDir="false" afterPath="$PROJECT_DIR$/.bsp/sbt.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/sbt__org_scala_lang_scala3_library_3_3_1_0_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_scala_lang_scala3_library_3_3_1_0_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sbt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sbt.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/Day1.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Day1.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/input/day2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/input/day2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Day2.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Day2.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/.history3" beforeDir="false" afterPath="$PROJECT_DIR$/target/.history3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-3.1.0/classes/Day1$package.tasty" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-3.1.0/classes/Day1$package.tasty" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/scala-3.1.0/classes/Day2$package.tasty" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-3.1.0/classes/Day2$package.tasty" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-3.1.0/update/update_cache_3/output" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-3.1.0/update/update_cache_3/output" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/_global/updateClassifiers/_global/streams/update_cache_3/output" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/_global/updateClassifiers/_global/streams/update_cache_3/output" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,6 +113,22 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="scala-line">
+          <url>file://$PROJECT_DIR$/src/main/scala/Day2.scala</url>
+          <line>26</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="scala-line">
+          <url>file://$PROJECT_DIR$/src/main/scala/Day2.scala</url>
+          <line>28</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
