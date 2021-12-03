@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3c80242d-2c3a-4a2d-9300-7353ce40d940" name="Changes" comment="Day 2">
-      <change afterPath="$PROJECT_DIR$/src/main/input/day3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/Day3.scala" afterDir="false" />
+    <list default="true" id="3c80242d-2c3a-4a2d-9300-7353ce40d940" name="Changes" comment="Day 3">
+      <change afterPath="$PROJECT_DIR$/src/main/input/day4.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/Day4.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
     </list>
     <list id="40ffbff6-16c1-4493-990e-c383fa4ec33b" name="trash" comment="">
       <change afterPath="$PROJECT_DIR$/../2020/project/target/config-classes/$10854043694bdb1a3580.cache" afterDir="false" />
@@ -204,7 +203,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638435868773</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Day 3">
+      <created>1638521438764</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1638521438764</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -220,7 +226,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Day 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Day 2" />
+    <MESSAGE value="Day 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Day 3" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
