@@ -50,8 +50,8 @@ extension(lst: List[String])
     val numberSize = lst.head.length() - 1
     var tempLst = lst
     for(i <- 0 to numberSize if tempLst.length > 1)
-      val mostCommon = tempLst.getColumnPerIndex(i).findTheLeastCommon()
-      tempLst = tempLst.filterPerValue(mostCommon, i)
+      val leastCommon = tempLst.getColumnPerIndex(i).findTheLeastCommon()
+      tempLst = tempLst.filterPerValue(leastCommon, i)
     tempLst.head
 
 
