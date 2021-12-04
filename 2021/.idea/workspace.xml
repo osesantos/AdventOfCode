@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3c80242d-2c3a-4a2d-9300-7353ce40d940" name="Changes" comment="setup day 4">
-      <change beforePath="$PROJECT_DIR$/src/main/scala/Day3.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Day3.scala" afterDir="false" />
+    <list default="true" id="3c80242d-2c3a-4a2d-9300-7353ce40d940" name="Changes" comment="typo fix">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/input/day4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/input/day4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Day4.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Day4.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
     </list>
     <list id="40ffbff6-16c1-4493-990e-c383fa4ec33b" name="trash" comment="">
       <change afterPath="$PROJECT_DIR$/../2020/project/target/config-classes/$10854043694bdb1a3580.cache" afterDir="false" />
@@ -216,7 +219,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638521562793</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="typo fix">
+      <created>1638521677002</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1638521677002</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -234,7 +244,19 @@
     <MESSAGE value="Day 2" />
     <MESSAGE value="Day 3" />
     <MESSAGE value="setup day 4" />
-    <option name="LAST_COMMIT_MESSAGE" value="setup day 4" />
+    <MESSAGE value="typo fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="typo fix" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="scala-line">
+          <url>file://$PROJECT_DIR$/src/main/scala/Day4.scala</url>
+          <line>54</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
