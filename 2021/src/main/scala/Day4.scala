@@ -114,6 +114,18 @@ class Board(var rows: List[List[(Int, Boolean)]] = List[List[(Int, Boolean)]]())
     sum
 }
 
+def getWinBoard(first: List[Board], second: List[Board]): Board =
+  var boards = List[Board]()
+  first.foreach{ a =>
+    boards = second.filter(b => a.equals(b) )
+  }
+  if (boards.nonEmpty)
+    boards.head
+  else
+    Board()
+
+
+
 def day4_1(input: List[String]): Unit =
   val parsedInput = input.parse
   val numbers = parsedInput.head
@@ -132,23 +144,27 @@ def day4_2(input: List[String]): Unit =
   val numbers = parsedInput.head
   var boards = parsedInput.tail.addBool.toBoard
 
-  var numOfBoardsWinning = 0
-
-  var score = 0
+  var num = 0
   var bingoBoards = List[Board]()
-  for(n <- numbers if numOfBoardsWinning <= boards.length)
-    boards = boards.filterIsNotBingo
-    bingoBoards = boards.filterIsBingo
-    println(boards)
-    println(bingoBoards)
-    boards = boards.markInAllBoards(n)
-    if(boards.isBingo)
-      numOfBoardsWinning += 1
-    if(numOfBoardsWinning > boards.length)
-      println(n)
-      println(boards.isBingoIndex)
-      println(boards.length)
-      score = boards(boards.isBingoIndex).sumUnmarked() * n
+  var notBingoBoards = List[Board]()
+  var lastWinBoard = Board()
 
+  breakable {
+    for (n <- numbers)
+      if(notBingoBoards.length == 1)
+        lastWinBoard = notBingoBoards.head
 
-  println(s"Day 4 - PART 2: $score")
+      num = n
+
+      boards = boards.markInAllBoards(n)
+      notBingoBoards = boards.filterIsNotBingo
+      bingoBoards = boards.filterIsBingo
+      //println(s"Not bingo boards: ${notBingoBoards.length}")
+      //println(s"Bingo boards: ${bingoBoards.length}")
+      //println(s"Boards: ${boards.length}")
+
+      if(notBingoBoards.isEmpty)
+        break
+  }
+
+  println(s"Day 4 - PART 2: ${lastWinBoard.sumUnmarked() * num}")

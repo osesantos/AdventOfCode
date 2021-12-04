@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3c80242d-2c3a-4a2d-9300-7353ce40d940" name="Changes" comment="Day4 part 1">
+    <list default="true" id="3c80242d-2c3a-4a2d-9300-7353ce40d940" name="Changes" comment="Day4 part 2 halfway">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Day4.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Day4.scala" afterDir="false" />
     </list>
@@ -245,7 +245,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638622618449</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Day4 part 2 halfway">
+      <created>1638625139872</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1638625139872</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -267,7 +274,8 @@
     <MESSAGE value="Day4 first version" />
     <MESSAGE value="Day4 working" />
     <MESSAGE value="Day4 part 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Day4 part 1" />
+    <MESSAGE value="Day4 part 2 halfway" />
+    <option name="LAST_COMMIT_MESSAGE" value="Day4 part 2 halfway" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
