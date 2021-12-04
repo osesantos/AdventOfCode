@@ -1,5 +1,6 @@
 import scala.collection.mutable.ListBuffer
 import scala.language.postfixOps
+import scala.util.control.Breaks.{break, breakable}
 
 def day4(): Unit =
   val input = "day4".getInput
@@ -86,6 +87,10 @@ extension(lst : List[Board])
         index = i
     index
 
+  def filterIsBingo: List[Board] = lst.filter(b => b.isBingo())
+
+  def filterIsNotBingo: List[Board] = lst.filter(b => !b.isBingo())
+
 class Board(var rows: List[List[(Int, Boolean)]] = List[List[(Int, Boolean)]]()){
 
   def markInAllRows(number: Int): Board =
@@ -123,9 +128,27 @@ def day4_1(input: List[String]): Unit =
   println(s"Day 4 - PART 1: $score")
 
 def day4_2(input: List[String]): Unit =
-  println(s"Day 4 - PART 2: ")
+  val parsedInput = input.parse
+  val numbers = parsedInput.head
+  var boards = parsedInput.tail.addBool.toBoard
+
+  var numOfBoardsWinning = 0
+
+  var score = 0
+  var bingoBoards = List[Board]()
+  for(n <- numbers if numOfBoardsWinning <= boards.length)
+    boards = boards.filterIsNotBingo
+    bingoBoards = boards.filterIsBingo
+    println(boards)
+    println(bingoBoards)
+    boards = boards.markInAllBoards(n)
+    if(boards.isBingo)
+      numOfBoardsWinning += 1
+    if(numOfBoardsWinning > boards.length)
+      println(n)
+      println(boards.isBingoIndex)
+      println(boards.length)
+      score = boards(boards.isBingoIndex).sumUnmarked() * n
 
 
-
-
-
+  println(s"Day 4 - PART 2: $score")
