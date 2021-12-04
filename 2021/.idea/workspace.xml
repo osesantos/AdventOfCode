@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3c80242d-2c3a-4a2d-9300-7353ce40d940" name="Changes" comment="Day4 first version">
+    <list default="true" id="3c80242d-2c3a-4a2d-9300-7353ce40d940" name="Changes" comment="Day4 working">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/input/day4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/input/day4.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Day4.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Day4.scala" afterDir="false" />
     </list>
     <list id="40ffbff6-16c1-4493-990e-c383fa4ec33b" name="trash" comment="">
@@ -231,7 +232,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638613918965</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Day4 working">
+      <created>1638621844765</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1638621844765</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -251,14 +259,15 @@
     <MESSAGE value="setup day 4" />
     <MESSAGE value="typo fix" />
     <MESSAGE value="Day4 first version" />
-    <option name="LAST_COMMIT_MESSAGE" value="Day4 first version" />
+    <MESSAGE value="Day4 working" />
+    <option name="LAST_COMMIT_MESSAGE" value="Day4 working" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="scala-line">
           <url>file://$PROJECT_DIR$/src/main/scala/Day4.scala</url>
-          <line>118</line>
+          <line>122</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>

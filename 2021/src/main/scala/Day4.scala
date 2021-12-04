@@ -7,12 +7,6 @@ def day4(): Unit =
   day4_2(input)
 
 
-extension(lst: List[Int])
-  def score(numberCalled: Int) = lst.sum * numberCalled
-
-  def getNextNumber: (List[Int], Int) = (lst.tail, lst.head)
-
-
 extension(str: String)
   def toRow: List[Int] =
     if (str.nonEmpty)
@@ -39,7 +33,7 @@ extension(lst: List[List[Int]])
 
 extension(lst: List[List[(Int, Boolean)]])
   def toBoard: List[Board] =
-    var tempList = ListBuffer[Board]()
+    val tempList = ListBuffer[Board]()
     var tempRows = ListBuffer[List[(Int, Boolean)]]()
     lst.foreach(r =>
       if(r.length == 1)
@@ -53,9 +47,9 @@ extension(lst: List[List[(Int, Boolean)]])
     tempList.toList.tail
 
   def cloneToListBuffer: ListBuffer[ListBuffer[(Int, Boolean)]] =
-    var list = ListBuffer[ListBuffer[(Int, Boolean)]]()
+    val list = ListBuffer[ListBuffer[(Int, Boolean)]]()
     lst.foreach { (r: List[(Int, Boolean)]) =>
-      var rowToAdd = ListBuffer[(Int, Boolean)]()
+      val rowToAdd = ListBuffer[(Int, Boolean)]()
       r.foreach(e => rowToAdd += e)
       list += rowToAdd
     }
@@ -64,13 +58,13 @@ extension(lst: List[List[(Int, Boolean)]])
   def checkRowsForBingo: Boolean =
     var rowBingo = false
     for(r <- lst if !rowBingo)
-      var rowsMarked: List[(Int, Boolean)] = r.filter((i, b) => b)
+      val rowsMarked: List[(Int, Boolean)] = r.filter((i, b) => b)
       if(rowsMarked.length == 5)
         rowBingo = true
     rowBingo
 
   def pivot: List[List[(Int, Boolean)]] =
-    var pivotedTable = lst.cloneToListBuffer
+    val pivotedTable = lst.cloneToListBuffer
     for(y <- 0 to 4; x <- 0 to 4)
       pivotedTable(y)(x) = lst(x)(y)
     pivotedTable.map(r => r.toList).toList
@@ -85,6 +79,12 @@ extension(lst : List[Board])
       isBingo = b.isBingo()
     isBingo
 
+  def isBingoIndex: Int =
+    var index = -1
+    for (i <- 0 to lst.length if index == -1)
+      if(lst(i).isBingo())
+        index = i
+    index
 
 class Board(var rows: List[List[(Int, Boolean)]] = List[List[(Int, Boolean)]]()){
 
@@ -102,6 +102,11 @@ class Board(var rows: List[List[(Int, Boolean)]] = List[List[(Int, Boolean)]]())
 
   def printBoard(): Unit =
     rows.foreach(l => println(s"${l.foreach(e => print(s" $e "))}"))
+
+  def sumUnmarked(): Int =
+    var sum = 0
+    rows.foreach(r => r.foreach(e => if !e._2 then sum += e._1))
+    sum
 }
 
 def day4_1(input: List[String]): Unit =
@@ -109,14 +114,13 @@ def day4_1(input: List[String]): Unit =
   val numbers = parsedInput.head
   var boards = parsedInput.tail.addBool.toBoard
 
+  var score = 0
   for(n <- numbers if !boards.isBingo)
-    //println(n)
     boards = boards.markInAllBoards(n)
+    if(boards.isBingo)
+      score = boards(boards.isBingoIndex).sumUnmarked() * n
 
-
-  //boards.foreach(b => b.printBoard())
-
-  println(s"Day 4 - PART 1: ")
+  println(s"Day 4 - PART 1: $score")
 
 def day4_2(input: List[String]): Unit =
   println(s"Day 4 - PART 2: ")
