@@ -59,12 +59,12 @@ extension(str: String)
   def toDecimal: Int = Integer.parseInt(str, 2)
 
 
-def multiply(a: Int, b: Int): Int = a * b
+def multiply2(a: Int, b: Int): Int = a * b
 
 def day3_1(input: List[String]): Unit =
   val gammaRate = input.getGammaRate.toDecimal
   val epsilonRate = input.getEpsilonRate.toDecimal
-  println(s"Day 3 - PART 1: ${multiply(gammaRate, epsilonRate)}")
+  println(s"Day 3 - PART 1: ${multiply2(gammaRate, epsilonRate)}")
 
 def day3_2(input: List[String]): Unit =
   val O2Rate = input.getO2Rate.toDecimal
