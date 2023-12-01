@@ -14,10 +14,10 @@ pub fn day7_1(file_name: &str) -> String {
     for x in lines {
         let result = parse_line(x);
         if !result.is_some() {
-            if !x.contains("cd /") && x.contains("cd") {
-                let dir = split_string_nth(&x.split(" "), 2);
-                // ...
-            }
+            //if !x.contains("cd /") && x.contains("cd") {
+                //let dir = split_string_nth(&x.split(" "), 2);
+                //// ...
+            //}
         }
     }
 
@@ -28,11 +28,11 @@ pub fn day7_1(file_name: &str) -> String {
 fn add_child(line: String, dir: String, tree: Vec<TreeEntry>) -> Vec<TreeEntry> {
     let new_tree: Vec<TreeEntry> = Vec::new();
     tree.iter().for_each(|elem| {
-        let new_elem: TreeEntry = TreeEntry::new(elem);
-        let line_split = line.split(" ");
-        if new_elem.name == dir {
-           // ...
-        }
+        //let new_elem: TreeEntry = TreeEntry::new(elem);
+        //let line_split = line.split(" ");
+        //if new_elem.name == dir {
+           //// ...
+        //}
     });
     return new_tree
 

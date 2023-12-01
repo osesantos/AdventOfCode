@@ -8,8 +8,8 @@ use crate::day6::{day6_1, day6_2};
 use crate::day7::{day7_1, day7_2};
 
 mod utils;
-mod day1;
 mod traits;
+mod day1;
 mod day2;
 mod day3;
 mod day4;

@@ -1,4 +1,3 @@
-
 use std::fs;
 
 pub fn get_file_lines(_file_name: &str) -> Vec<String> {
