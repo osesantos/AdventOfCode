@@ -16,6 +16,11 @@ struct Game {
     sets: Vec<Set>
 }
 
+#[derive(Debug)]
+struct GameWithMin {
+    set: Set
+}
+
 const RED: usize = 12;
 const GREEN: usize = 13;
 const BLUE: usize = 14;
@@ -78,5 +83,43 @@ fn parse_set(input: String) -> Vec<Set> {
 }
 
 pub fn day2_2(_input: &Vec<String>) -> u32 {
-    0
+    let games = parse_game(_input);
+    let games_with_mins = games.iter().map(|g| parse_to_fewer(g));
+    games_with_mins.map(|g| (g.set.n_red * g.set.n_green * g.set.n_blue) as u32).sum()
+}
+
+fn parse_to_fewer(input: &Game) -> GameWithMin {
+    let mut game_with_min = GameWithMin{
+        set: Set { n_red: 0, n_green: 0, n_blue: 0 }
+    };
+
+    input.sets.iter().enumerate().for_each(|(i, s)|{
+        if i == 0 {
+            game_with_min.set.n_red = s.n_red;
+            game_with_min.set.n_green = s.n_green;
+            game_with_min.set.n_blue = s.n_blue;
+        } else {
+            if s.n_red > game_with_min.set.n_red {
+                game_with_min.set.n_red = s.n_red;
+            }
+            if s.n_green > game_with_min.set.n_green {
+                game_with_min.set.n_green = s.n_green;
+            }
+            if s.n_blue > game_with_min.set.n_blue {
+                game_with_min.set.n_blue = s.n_blue;
+            }
+        }
+    });
+
+    if game_with_min.set.n_red == 0 {
+        game_with_min.set.n_red = 1;
+    }
+    if game_with_min.set.n_green == 0 {
+        game_with_min.set.n_green = 1;
+    }
+    if game_with_min.set.n_blue == 0 {
+        game_with_min.set.n_blue = 1;
+    }
+
+    game_with_min
 }
