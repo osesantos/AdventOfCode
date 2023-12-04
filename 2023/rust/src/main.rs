@@ -28,6 +28,6 @@ fn main() {
     println!("day4.1 sample - {0}", day4_1(&get_input_sample("day4")));
     println!("day4.1        - {0}", day4_1(&get_input("day4")));
     println!("day4.2 sample - {0}", day4_2(&get_input_sample("day4")));
-    println!("day4.2        - {0}", day4_2(&get_input("day4")));
+    //println!("day4.2        - {0}", day4_2(&get_input("day4")));
     println!("");
 }
