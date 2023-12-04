@@ -1,126 +1,114 @@
-// any number adjacent to a symbol, even diagonally, is a "part number"
-// adjacent means that around the number at least one position has a symbol
-// whats the sum of all part numbers?
+use regex::Regex;
 
-// eg n: ".52.", "..*.", "...."
-// eg n: ".532.", "...*.", "....."
 #[derive(Debug)]
 struct Part {
-    n: u32,
-    topn: String,
-    bottomn: String
+    line_i: usize,
+    i: usize,
+    value: u32,
+    n: String,
+    top: String,
+    bottom: String,
+    is_valid: bool,
 }
 
-pub fn day3_1(input: &Vec<String>) -> u32 {
+pub fn day3_1(_input: &Vec<String>) -> u32 {
     let mut parts: Vec<Part> = vec![];
-    input.iter().enumerate().for_each(|(i, l)| {
-        println!("Mapping line {0}", l);
-        let mut line_parts = map_line_to_parts(input.clone(), l.to_string(), i);
-        parts.append(&mut line_parts);
-    });
-    parts.into_iter().map(|p| p.n).sum()
-}
-
-fn map_line_to_parts(input: Vec<String>, line: String, i: usize) -> Vec<Part> {
-    let mut top_line = String::new();
-    let mut bottom_line = String::new();
-
-    if i != 0 {
-        top_line = input.clone().into_iter().nth(i - 1).unwrap();
-    }
-
-    println!("{0}",input.len());
-    if i != (input.len() - 1) {
-        bottom_line = input.clone().into_iter().nth(i + 1).unwrap();
-    }
-
-    find_possible_parts(line.clone(), top_line, bottom_line)
-}
-
-// goes through the line to find any number
-fn find_possible_parts(line: String, top_line: String, bottom_line: String) -> Vec<Part> {
-    let mut parts_found: Vec<Part> = vec![];
-    let mut part_found: bool = false;
-    line.chars().into_iter().enumerate().for_each(|(i, c)| {
-        if c == '.' && part_found {
-            part_found = false;
-        }
-        if c.is_numeric() && !part_found {
-            part_found = true;
-
-            // part
-            let part = retrieve_n(line.clone(), i);
-            let mut top = String::new();
-            let mut bottom = String::new();
-
-            // top
-            if !top_line.is_empty() {
-                top = retrieve_n(top_line.clone(), i);
+    _input.into_iter().enumerate().for_each(|(i, _line)|{
+        let parts_index_and_n = get_parts_index_and_n(_line.to_string());
+        parts_index_and_n.into_iter().for_each(|part| {
+            let mut _top = String::new();
+            let mut _bottom = String::new();
+            if i == 0 {
+                _top = "".to_string();
+            } else {
+                _top = get_top_or_bottom(_input[i-1].to_string(), part.0, part.1.len());
             }
-
-            // bottom
-            if !bottom_line.is_empty() {
-                bottom = retrieve_n(bottom_line.clone(), i);
+            if i == _input.len() - 1 {
+                _bottom = "".to_string();
+            } else {
+                _bottom = get_top_or_bottom(_input[i+1].to_string(), part.0, part.1.len());
             }
+            
+            let _is_valid = is_part_valid(part.1.clone(), _top.clone(), _bottom.clone());
 
-            if is_part(part.clone(), top.clone(), bottom.clone()) {
-                parts_found.push(Part { n: clean_n(part).parse::<u32>().unwrap(), topn: top.to_string(), bottomn: bottom.to_string() })
-            }
-        }
+            let new_part = Part { 
+                line_i: i, 
+                i: part.0, 
+                value: get_part_value(part.1.clone()), 
+                n: part.1.clone(), 
+                top: _top.clone(), 
+                bottom: _bottom.clone(), 
+                is_valid: _is_valid};
+            parts.push(new_part);
+        });
     });
-    parts_found
+    parts.into_iter().filter(|p| p.is_valid).map(|p| p.value).sum()
 }
 
-fn clean_n(s: String) -> String {
-    let mut new_s = String::new();
-    s.chars().for_each(|c| {
-        if c.is_numeric() {
-            new_s.push(c);
-        }
-    });
-    new_s
-}
-
-fn retrieve_n(line: String, i: usize) -> String {
-    let mut n = String::new();
-    n.push(line.clone().chars().nth(i).unwrap());
-    n.push(line.clone().chars().nth(i + 1).unwrap());
-    n.push(line.clone().chars().nth(i + 2).unwrap());
-    // get char before n
-    if i > 0 {
-        n.push(line.clone().chars().nth(i - 1).unwrap());
+fn is_part_valid(n: String, top: String, bottom: String) -> bool {
+    let re = Regex::new(r"[^0-9a-zA-Z.\n]").unwrap();
+    if re.find(&n.as_str()).is_some() {
+        return true;
     }
-    // get char after n
-    println!("{0}, {1}, {2}", i, (i + 3), line.len());
-    if (i + 3) < (line.len() - 1) {
-        n.push(line.clone().chars().nth(i + 3).unwrap());
+    if re.find(&top.as_str()).is_some() {
+        return true;
     }
-    n = n.replace(".", "");
+    if re.find(&bottom.as_str()).is_some() {
+        return true;
+    }
 
-    n
+    return false;
+
 } 
 
-// validates that the char is not numeric or .
-fn is_symbol(c: char) -> bool {
-    !(c.is_numeric() || c == '.')
+fn get_top_or_bottom(_line: String, i: usize, size: usize) -> String {
+    if _line.is_empty() {
+        return "".to_string();
+    }
+    _line.chars().skip(i).take(size).collect()
 }
 
-// accepts the current number whith the left and right char, the top and the bottom
-// e.g. n: ".35." topn: "..*." bottomn: "...."
-// checks if any "." contains a symbol
-fn is_part(n: String, topn: String, bottomn: String) -> bool {
-    if n.chars().into_iter().any(|c| is_symbol(c)) {
-        return true;
-    }
-    if topn.chars().into_iter().any(|c| is_symbol(c)) {
-        return true;
-    }
-    if bottomn.chars().into_iter().any(|c| is_symbol(c)) {
-        return true;
-    }
-    false
+fn get_part_value(n: String) -> u32 {
+    let re = Regex::new(r"[0-9]{1,3}").unwrap();
+    re.find(&n.as_str()).expect("Unable to find value from n").as_str().parse::<usize>().unwrap() as u32
+}
+
+fn get_parts_index_and_n(_line: String) -> Vec<(usize, String)> {
+    let re = Regex::new(r".\d{1,3}.").unwrap();
+    let mut result: Vec<(usize, String)> = vec![];
+    re.captures_iter(&_line.as_str()).for_each(|g| {
+        g.iter().for_each(|m| {
+            let mut current_value = (m.unwrap().start(), m.unwrap().as_str().to_string());
+            // this is for e.g like "..123.456.."
+            if !result.is_empty() && current_value.1.chars().nth(0).unwrap().is_numeric() {
+                current_value.0 = current_value.0 - 1;
+                current_value.1 = result.last().unwrap().1.chars().last().unwrap().to_string() + current_value.1.as_str();
+            }
+            result.push(current_value)
+        });
+    });
+    result
+}
+
+#[derive(Debug)]
+struct Gear {
+    a_value: u32,
+    b_value: u32,
 }
 
 pub fn day3_2(_input: &Vec<String>) -> u32 {
+    let mut gears: Vec<Gear> = vec![];
+    _input.into_iter().enumerate().for_each(|(i, _line)|{
+        let ast = find_asterixes(_line.to_string());
+
+    });
     0
 }
+
+fn find_asterixes(_line: String) -> Vec<usize> {
+    let re = Regex::new(r"\*").unwrap();
+    re.find_iter(&_line.as_str()).map(|a| a.start()).collect()
+}
+
+
+
