@@ -28,7 +28,7 @@ pub fn day3_1(_input: &Vec<String>) -> u32 {
             } else {
                 _bottom = get_top_or_bottom(_input[i+1].to_string(), part.0, part.1.len());
             }
-            
+
             let _is_valid = is_part_valid(part.1.clone(), _top.clone(), _bottom.clone());
 
             let new_part = Part { 
@@ -92,22 +92,96 @@ fn get_parts_index_and_n(_line: String) -> Vec<(usize, String)> {
 
 #[derive(Debug)]
 struct Gear {
-    a_value: u32,
-    b_value: u32,
+    astx_i: u32,
+    values: Vec<u32>,
 }
 
+// Algorithm:
+// 1. look for the * by using the find_iter r"\*"
+// 2. get the index (i - 1 and i + 1)
+// 3. look for numbers in current, top and bottom line r"[0-9]"
+// 4. if any number starts or ends in index - 1 and index + 1 add it to gear
+// 5. multiply top and down
+// 6. sum
+//
 pub fn day3_2(_input: &Vec<String>) -> u32 {
     let mut gears: Vec<Gear> = vec![];
     _input.into_iter().enumerate().for_each(|(i, _line)|{
-        let ast = find_asterixes(_line.to_string());
+        let astx_vec = find_asterixes(_line.to_string());
+        let mut top_n_and_i: Vec<((u32, u32), String)>  = vec![];
+        let mut n_n_and_i: Vec<((u32, u32), String)>  = vec![];
+        let mut bottom_n_and_i: Vec<((u32, u32), String)>  = vec![];
 
+
+        if i != 0 {
+            top_n_and_i = find_numbers_and_indexes(_input[i-1].to_string());
+        } 
+
+        if i != _input.len() - 1 {
+            bottom_n_and_i = find_numbers_and_indexes(_input[i+1].to_string());
+        }
+
+        n_n_and_i = find_numbers_and_indexes(_line.to_string());
+
+        let line_gears: Vec<_> = astx_vec.iter().map(|a| find_gear(*a, top_n_and_i.clone(), n_n_and_i.clone(), bottom_n_and_i.clone())).collect();
+
+        for ele in line_gears {
+            gears.push(ele);
+        }
     });
-    0
+    gears.iter().filter(|g| g.values.len() == 2).map(|g| {
+        return g.values[0] * g.values[1];
+    }).sum()
 }
 
-fn find_asterixes(_line: String) -> Vec<usize> {
+fn find_gear(astx_i: u32, top: Vec<((u32, u32), String)>, n: Vec<((u32, u32), String)>, bottom: Vec<((u32, u32), String)>) -> Gear {
+    let mut gear = Gear{astx_i: astx_i, values: vec![]};
+
+    let low_range = astx_i - 1;
+    let high_range = astx_i + 2;
+    let range = low_range..high_range;
+
+    if !top.is_empty() {
+        top.iter().for_each(|e|{
+            if range.contains(&e.0.0) || range.contains(&e.0.1) {
+                gear.values.push(e.1.parse::<u32>().unwrap())
+            }
+        });
+    }
+
+    if !bottom.is_empty() {
+        bottom.iter().for_each(|e|{
+            if range.contains(&e.0.0) || range.contains(&e.0.1) {
+                gear.values.push(e.1.parse::<u32>().unwrap())
+            }
+        });
+    }
+
+    n.iter().for_each(|e|{
+        if range.contains(&e.0.0) || range.contains(&e.0.1) {
+            gear.values.push(e.1.parse::<u32>().unwrap())
+        }
+    });
+
+    if gear.values.len() > 2 {
+        println!("[ERROR] Found a gear with more that 2 values: ");
+        for ele in gear.values {
+            println!("{ele}");
+        }
+        panic!("Found a gear with more that 2 values");
+    }
+
+    gear
+}
+
+fn find_numbers_and_indexes(_line: String) -> Vec<((u32, u32), String)> {
+    let re = Regex::new(r"[0-9]{1,3}").unwrap();
+    re.find_iter(&_line.as_str()).map(|m| ((m.start() as u32, (m.end()-1) as u32), m.as_str().to_string())).collect()
+}
+
+fn find_asterixes(_line: String) -> Vec<u32> {
     let re = Regex::new(r"\*").unwrap();
-    re.find_iter(&_line.as_str()).map(|a| a.start()).collect()
+    re.find_iter(&_line.as_str()).map(|a| a.start() as u32).collect()
 }
 
 
