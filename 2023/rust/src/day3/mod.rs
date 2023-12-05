@@ -2,12 +2,7 @@ use regex::Regex;
 
 #[derive(Debug)]
 struct Part {
-    line_i: usize,
-    i: usize,
     value: u32,
-    n: String,
-    top: String,
-    bottom: String,
     is_valid: bool,
 }
 
@@ -32,12 +27,7 @@ pub fn day3_1(_input: &Vec<String>) -> u32 {
             let _is_valid = is_part_valid(part.1.clone(), _top.clone(), _bottom.clone());
 
             let new_part = Part { 
-                line_i: i, 
-                i: part.0, 
                 value: get_part_value(part.1.clone()), 
-                n: part.1.clone(), 
-                top: _top.clone(), 
-                bottom: _bottom.clone(), 
                 is_valid: _is_valid};
             parts.push(new_part);
         });
@@ -92,7 +82,6 @@ fn get_parts_index_and_n(_line: String) -> Vec<(usize, String)> {
 
 #[derive(Debug)]
 struct Gear {
-    astx_i: u32,
     values: Vec<u32>,
 }
 
@@ -109,7 +98,6 @@ pub fn day3_2(_input: &Vec<String>) -> u32 {
     _input.into_iter().enumerate().for_each(|(i, _line)|{
         let astx_vec = find_asterixes(_line.to_string());
         let mut top_n_and_i: Vec<((u32, u32), String)>  = vec![];
-        let mut n_n_and_i: Vec<((u32, u32), String)>  = vec![];
         let mut bottom_n_and_i: Vec<((u32, u32), String)>  = vec![];
 
 
@@ -121,7 +109,7 @@ pub fn day3_2(_input: &Vec<String>) -> u32 {
             bottom_n_and_i = find_numbers_and_indexes(_input[i+1].to_string());
         }
 
-        n_n_and_i = find_numbers_and_indexes(_line.to_string());
+        let n_n_and_i = find_numbers_and_indexes(_line.to_string());
 
         let line_gears: Vec<_> = astx_vec.iter().map(|a| find_gear(*a, top_n_and_i.clone(), n_n_and_i.clone(), bottom_n_and_i.clone())).collect();
 
@@ -135,7 +123,7 @@ pub fn day3_2(_input: &Vec<String>) -> u32 {
 }
 
 fn find_gear(astx_i: u32, top: Vec<((u32, u32), String)>, n: Vec<((u32, u32), String)>, bottom: Vec<((u32, u32), String)>) -> Gear {
-    let mut gear = Gear{astx_i: astx_i, values: vec![]};
+    let mut gear = Gear{values: vec![]};
 
     let low_range = astx_i - 1;
     let high_range = astx_i + 2;
@@ -183,6 +171,4 @@ fn find_asterixes(_line: String) -> Vec<u32> {
     let re = Regex::new(r"\*").unwrap();
     re.find_iter(&_line.as_str()).map(|a| a.start() as u32).collect()
 }
-
-
 

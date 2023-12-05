@@ -78,45 +78,32 @@ fn parse_instance(_line: &String) -> Instance {
     let id_nums: Vec<String> = _line.split(":").map(|e| e.to_string()).collect();
     Instance { 
         id: id_nums[0].to_string().replace("Card ", "").trim().parse::<usize>().unwrap(), 
-        count: 1
+        count: 0
     }
 }
 
-fn recursive_add_cards_own(_card: &Card, _cards: &Vec<Card>) -> Card {
-    let mut new_card = _card.clone();
-    println!("-----------------");
-    println!("Starting to add cards for card {0}", new_card.id);
-    println!("matches {0}", _card.matches);
-
-    if _card.matches == 0 {
-        println!("Exiting for card {0}", new_card.id);
-        return new_card;
-    }
-
-    let filtered_cards: Vec<&Card> = _cards
-        .iter()
-        .filter(|c| c.id > new_card.id && c.id < (new_card.id + new_card.matches + 1))
-        .collect();
-
-    // having a stack overflow
-    for c in &filtered_cards {
-        println!("{}", c.id);
-        new_card.cards_own.push(recursive_add_cards_own(c, _cards))
-    }
-
-    new_card
-}
-
-fn recursive_fill_instance(instances: &Vec<Instance>, card: &Card) -> Vec<Instance> {
+fn recursive_fill_instance(instances: &Vec<Instance>, card: &Card, cards: &Vec<Card>) -> Vec<Instance> {
     let mut new_instances = instances.clone();
 
-    if card.cards_own.is_empty() {
-        return new_instances;
+    // increase counter
+    for c in new_instances.iter_mut() {
+        if c.id == card.id {
+            c.count = c.count + 1; 
+        }
     }
 
-    for c in card.clone().cards_own {
-        new_instances = new_instances.iter().filter(|i| i.id == c.id).map(|i| Instance{ id: i.id, count: i.count + 1}).collect();
-        new_instances = recursive_fill_instance(&new_instances, card);
+    // exit condition
+    if card.matches == 0 {
+        return new_instances
+    }
+
+    let filtered_cards: Vec<&Card> = cards
+        .iter()
+        .filter(|c| c.id > card.id && c.id < (card.id + card.matches + 1))
+        .collect();
+
+    for c in &filtered_cards {
+        new_instances = recursive_fill_instance(&new_instances, c, cards);
     }
 
     new_instances
@@ -126,9 +113,8 @@ pub fn day4_2(_input: &Vec<String>) -> u32 {
     let cards: Vec<Card> = _input.iter().map(|line| parse_line(line)).collect();
     let mut instances: Vec<Instance>= _input.iter().map(|line| parse_instance(line)).collect();
 
-    let cards_with_own = cards.iter().map(|c| recursive_add_cards_own(&c, &cards));
-    for c in cards_with_own.clone() {
-        instances = recursive_fill_instance(&instances, &c);
+    for c in cards.clone() {
+        instances = recursive_fill_instance(&instances, &c, &cards);
     }
 
     instances.iter().map(|i| i.count as u32).sum()
