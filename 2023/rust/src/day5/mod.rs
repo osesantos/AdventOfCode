@@ -1,3 +1,5 @@
+use std::ops::{Range, RangeInclusive};
+
 #[derive(Debug)]
 struct Seed {
     seed: usize,
@@ -27,8 +29,8 @@ impl Clone for Seed {
 }
 
 struct Mapping {
-    destination: Vec<usize>,
-    source: Vec<usize>,
+    destination: usize,
+    source: usize,
     len: usize,
 }
 
@@ -55,84 +57,56 @@ pub fn day5_1(_input: &Vec<String>) -> u32 {
 
     let seeds_filled: Vec<Seed> = seeds.iter().map(|s| fill_seed(&s, &p1_map, &p2_map, &p3_map, &p4_map, &p5_map, &p6_map, &p7_map)).collect();
 
-    seeds_filled.into_iter().for_each(|s| println!("seed: {0}, soil: {1}, fert: {2}, wat: {3}, lig: {4}, tem: {5}, hum: {6}, location: {7}", s.seed, s.soil, s.fertilizer, s.water, s.light, s.temperature, s.humidity, s.location));
+    //seeds_filled.into_iter().for_each(|s| println!("seed: {0}, soil: {1}, fert: {2}, wat: {3}, lig: {4}, tem: {5}, hum: {6}, location: {7}", s.seed, s.soil, s.fertilizer, s.water, s.light, s.temperature, s.humidity, s.location));
 
-    //let mut location = seeds_filled.last().unwrap().location;
-    let mut location = 0;
-    //for seed in seeds_filled {
-        //if seed.location < location {
-            //location = seed.location;
-        //}
-    //}
-    
+    let mut location = seeds_filled.last().unwrap().location;
+    for seed in seeds_filled {
+        if seed.location < location {
+            location = seed.location;
+        }
+    }
+
     location as u32
 }
+
+fn get_position(_start: usize, _len: usize, _seed: usize) -> Option<usize> {
+    if _seed >= _start && _seed <= (_start + _len) {
+        return Some(_seed - _start);
+    }
+    return None;
+
+}
+
+fn inner_fill_seed(mappings: &Vec<Mapping>, input_value: usize) -> usize {
+    let mut r = input_value;
+    for m in mappings {
+        let i = get_position(m.source, m.len, input_value);
+        if i.is_some() {
+            r = m.destination + i.unwrap();
+            break;
+        }
+    }
+    r
+} 
+
 
 fn fill_seed(_seed: &Seed, m1: &Vec<Mapping>, m2: &Vec<Mapping>, m3: &Vec<Mapping>, m4: &Vec<Mapping>, m5: &Vec<Mapping>, m6: &Vec<Mapping>, m7: &Vec<Mapping>) -> Seed {
     let mut seed = _seed.to_owned().clone();
 
-    for m in m1 {
-        let i = m.source.iter().position(|v| v == &seed.seed);
-        if i.is_some() {
-            seed.soil = m.destination.iter().nth(i.unwrap()).unwrap().clone();
-            break;
-        }
-        seed.soil = seed.seed.clone()
-    }
+    seed.soil = inner_fill_seed(m1, seed.seed);
 
-    for m in m2 {
-        let i = m.source.iter().position(|v| v == &seed.soil);
-        if i.is_some() {
-            seed.fertilizer = m.destination.iter().nth(i.unwrap()).unwrap().clone();
-            break;
-        }
-        seed.fertilizer = seed.soil.clone()
-    }
+    seed.fertilizer = inner_fill_seed(m2, seed.soil);
 
-    for m in m3 {
-        let i = m.source.iter().position(|v| v == &seed.fertilizer);
-        if i.is_some() {
-            seed.water = m.destination.iter().nth(i.unwrap()).unwrap().clone();
-            break;
-        }
-        seed.water = seed.fertilizer.clone()
-    }
-    
-    for m in m4 {
-        let i = m.source.iter().position(|v| v == &seed.water);
-        if i.is_some() {
-            seed.light = m.destination.iter().nth(i.unwrap()).unwrap().clone();
-            break;
-        }
-        seed.light = seed.water.clone()
-    }
+    seed.water = inner_fill_seed(m3, seed.fertilizer);
 
-    for m in m5 {
-        let i = m.source.iter().position(|v| v == &seed.light);
-        if i.is_some() {
-            seed.temperature = m.destination.iter().nth(i.unwrap()).unwrap().clone();
-            break;
-        }
-        seed.temperature = seed.light.clone()
-    }
+    seed.light = inner_fill_seed(m4, seed.water);
 
-    for m in m6 {
-        let i = m.source.iter().position(|v| v == &seed.temperature);
-        if i.is_some() {
-            seed.humidity = m.destination.iter().nth(i.unwrap()).unwrap().clone();
-            break;
-        }
-        seed.humidity = seed.temperature.clone()
-    }
+    seed.temperature = inner_fill_seed(m5, seed.light);
 
-    for m in m7 {
-        let i = m.source.iter().position(|v| v == &seed.humidity);
-        if i.is_some() {
-            seed.location = m.destination.iter().nth(i.unwrap()).unwrap().clone();
-            break;
-        }
-        seed.location = seed.humidity.clone()
-    }
+    seed.humidity = inner_fill_seed(m6, seed.temperature);
+
+    seed.location = inner_fill_seed(m7, seed.humidity);
+
     seed
 }
 
@@ -150,7 +124,7 @@ fn get_seeds(_input: &Vec<String>) -> Vec<Seed> {
 }
 
 fn get_mapping(_input: &Vec<String>, map_i: usize, next_map_i: usize) -> Vec<Mapping> {
-    println!("--------");
+    //println!("--------");
     _input.iter().enumerate().map(|(i, l)| {
         if i < map_i + 1 ||  i > next_map_i - 1 {
             return String::new();
@@ -158,11 +132,11 @@ fn get_mapping(_input: &Vec<String>, map_i: usize, next_map_i: usize) -> Vec<Map
             return l.to_string();
         }
     }).into_iter().filter(|l| !l.is_empty()).map(|l| {
-            println!("{}", l);
+            //println!("{}", l);
             let line_split: Vec<&str> = l.split(" ").collect();
             let leng = line_split[2].parse::<usize>().unwrap();
-            let dest = vec![line_split[0].parse::<usize>().unwrap();leng];
-            let sourc = vec![line_split[1].parse::<usize>().unwrap();leng];
+            let dest = line_split[0].parse::<usize>().unwrap();
+            let sourc = line_split[1].parse::<usize>().unwrap();
             return Mapping {
                 destination: dest,
                 source: sourc,
