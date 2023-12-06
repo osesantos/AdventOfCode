@@ -56,7 +56,7 @@ fn main() {
     if day == "day5" {
         println!("");
         println!("day5.1 sample - {0}", day5_1(&get_input_sample("day5")));
-        println!("day5.1        - {0}", day5_1(&get_input("day5")));
+        //println!("day5.1        - {0}", day5_1(&get_input("day5")));
         println!("day5.2 sample - {0}", day5_2(&get_input_sample("day5")));
         println!("day5.2        - {0}", day5_2(&get_input("day5")));
         println!("");
