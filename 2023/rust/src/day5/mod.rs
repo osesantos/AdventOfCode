@@ -1,4 +1,3 @@
-use std::ops::{Range, RangeInclusive};
 
 #[derive(Debug)]
 struct Seed {
@@ -146,5 +145,74 @@ fn get_mapping(_input: &Vec<String>, map_i: usize, next_map_i: usize) -> Vec<Map
 }
 
 pub fn day5_2(_input: &Vec<String>) -> u32 {
-    0
+    let p = _input.iter().position(|l| l.contains("seeds:"));
+    let p1 = _input.iter().position(|l| l.contains("seed-to-soil")).unwrap();
+    let p2 = _input.iter().position(|l| l.contains("soil-to-fertilizer")).unwrap();
+    let p3 = _input.iter().position(|l| l.contains("fertilizer-to-water")).unwrap();
+    let p4 = _input.iter().position(|l| l.contains("water-to-light")).unwrap();
+    let p5 = _input.iter().position(|l| l.contains("light-to-temperature")).unwrap();
+    let p6 = _input.iter().position(|l| l.contains("temperature-to-humidity")).unwrap();
+    let p7 = _input.iter().position(|l| l.contains("humidity-to-location")).unwrap();
+
+    let seeds = get_seeds_2(&_input);
+    let p1_map = get_mapping(&_input, p1, p2);
+    let p2_map = get_mapping(&_input, p2, p3);
+    let p3_map = get_mapping(&_input, p3, p4);
+    let p4_map = get_mapping(&_input, p4, p5);
+    let p5_map = get_mapping(&_input, p5, p6);
+    let p6_map = get_mapping(&_input, p6, p7);
+    let p7_map = get_mapping(&_input, p7, _input.len());
+
+    let seeds_filled: Vec<Seed> = seeds.iter().map(|s| fill_seed(&s, &p1_map, &p2_map, &p3_map, &p4_map, &p5_map, &p6_map, &p7_map)).collect();
+
+    seeds_filled.clone().into_iter().for_each(|s| println!("seed: {0}, soil: {1}, fert: {2}, wat: {3}, lig: {4}, tem: {5}, hum: {6}, location: {7}", s.seed, s.soil, s.fertilizer, s.water, s.light, s.temperature, s.humidity, s.location));
+
+    let mut location = seeds_filled.last().unwrap().location;
+    for seed in seeds_filled {
+        if seed.location < location {
+            location = seed.location;
+        }
+    }
+
+    location as u32
+}
+
+
+fn get_seeds_2(_input: &Vec<String>) -> Vec<Seed> {
+    let seeds_raw = _input.iter().nth(0).unwrap().replace("seeds: ", "");
+    let seeds_splitted = seeds_raw.split(" ");
+
+    // 0 => start
+    // 1 => len
+    let mut seeds_pairs: Vec<_> = vec![];
+    seeds_splitted.clone().into_iter().enumerate().for_each(|(i, v)| {
+        if i % 2 != 0 {
+            let start = seeds_splitted.clone().nth(i-1).unwrap().parse::<usize>().unwrap();
+            let len = v.parse::<usize>().unwrap();
+            seeds_pairs.push((start, len));
+        }
+    });
+
+    let mut seeds: Vec<Seed> = vec![];
+
+    for pair in seeds_pairs {
+        let mut i = pair.0;
+        while i <= (pair.0 + pair.1.clone()) {
+            seeds.push(Seed{
+                seed: i,
+                soil: 0,
+                fertilizer: 0,
+                water: 0,
+                light: 0,
+                temperature: 0,
+                humidity: 0,
+                location: 0
+            });
+
+            i = i + 1;
+        }
+    }
+
+    seeds
+
 }
