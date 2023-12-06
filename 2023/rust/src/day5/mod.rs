@@ -2,6 +2,7 @@
 #[derive(Debug)]
 struct Seed {
     seed: usize,
+    len: usize,
     soil: usize,
     fertilizer: usize,
     water: usize,
@@ -16,6 +17,7 @@ impl Clone for Seed {
         // Create a new instance of Card with the same values
         Seed {
             seed: self.seed.clone(),
+            len: self.len.clone(),
             soil: self.soil.clone(),
             fertilizer: self.fertilizer.clone(),
             water: self.water.clone(),
@@ -92,6 +94,8 @@ fn inner_fill_seed(mappings: &Vec<Mapping>, input_value: usize) -> usize {
 fn fill_seed(_seed: &Seed, m1: &Vec<Mapping>, m2: &Vec<Mapping>, m3: &Vec<Mapping>, m4: &Vec<Mapping>, m5: &Vec<Mapping>, m6: &Vec<Mapping>, m7: &Vec<Mapping>) -> Seed {
     let mut seed = _seed.to_owned().clone();
 
+    // Add a loop to get the location for all the range, and return the lowest one
+
     seed.soil = inner_fill_seed(m1, seed.seed);
 
     seed.fertilizer = inner_fill_seed(m2, seed.soil);
@@ -112,6 +116,7 @@ fn fill_seed(_seed: &Seed, m1: &Vec<Mapping>, m2: &Vec<Mapping>, m3: &Vec<Mappin
 fn get_seeds(_input: &Vec<String>) -> Vec<Seed> {
     _input.iter().nth(0).unwrap().replace("seeds: ", "").split(" ").map(|s| Seed{
         seed: s.parse::<usize>().unwrap(),
+        len: 0,
         soil: 0,
         fertilizer: 0,
         water: 0,
@@ -145,7 +150,6 @@ fn get_mapping(_input: &Vec<String>, map_i: usize, next_map_i: usize) -> Vec<Map
 }
 
 pub fn day5_2(_input: &Vec<String>) -> u32 {
-    let p = _input.iter().position(|l| l.contains("seeds:"));
     let p1 = _input.iter().position(|l| l.contains("seed-to-soil")).unwrap();
     let p2 = _input.iter().position(|l| l.contains("soil-to-fertilizer")).unwrap();
     let p3 = _input.iter().position(|l| l.contains("fertilizer-to-water")).unwrap();
@@ -163,7 +167,7 @@ pub fn day5_2(_input: &Vec<String>) -> u32 {
     let p6_map = get_mapping(&_input, p6, p7);
     let p7_map = get_mapping(&_input, p7, _input.len());
 
-    let seeds_filled: Vec<Seed> = seeds.iter().map(|s| fill_seed(&s, &p1_map, &p2_map, &p3_map, &p4_map, &p5_map, &p6_map, &p7_map)).collect();
+    let seeds_filled: Vec<Seed> = seeds.iter().map(|s| fill_seed_2(&s, &p1_map, &p2_map, &p3_map, &p4_map, &p5_map, &p6_map, &p7_map)).collect();
 
     seeds_filled.clone().into_iter().for_each(|s| println!("seed: {0}, soil: {1}, fert: {2}, wat: {3}, lig: {4}, tem: {5}, hum: {6}, location: {7}", s.seed, s.soil, s.fertilizer, s.water, s.light, s.temperature, s.humidity, s.location));
 
@@ -196,23 +200,62 @@ fn get_seeds_2(_input: &Vec<String>) -> Vec<Seed> {
     let mut seeds: Vec<Seed> = vec![];
 
     for pair in seeds_pairs {
-        let mut i = pair.0;
-        while i <= (pair.0 + pair.1.clone()) {
-            seeds.push(Seed{
-                seed: i,
-                soil: 0,
-                fertilizer: 0,
-                water: 0,
-                light: 0,
-                temperature: 0,
-                humidity: 0,
-                location: 0
-            });
+        //let mut i = pair.0;
+        //while i <= (pair.0 + pair.1.clone()) {
+        //seeds.push(Seed{
+        //seed: i,
+        //soil: 0,
+        //fertilizer: 0,
+        //water: 0,
+        //light: 0,
+        //temperature: 0,
+        //humidity: 0,
+        //location: 0
+        //});
 
-            i = i + 1;
-        }
+        //i = i + 1;
+        //}
+        seeds.push(Seed { seed: pair.0, len: pair.1, soil: 0, fertilizer: 0, water: 0, light: 0, temperature: 0, humidity: 0, location: 0 })
     }
 
     seeds
 
 }
+
+fn fill_seed_2(_seed: &Seed, m1: &Vec<Mapping>, m2: &Vec<Mapping>, m3: &Vec<Mapping>, m4: &Vec<Mapping>, m5: &Vec<Mapping>, m6: &Vec<Mapping>, m7: &Vec<Mapping>) -> Seed {
+    let mut seed = _seed.to_owned().clone();
+
+    // Loop to get the location for all the range, and return the lowest one
+    let mut i = seed.seed;
+    let mut lowestlocation = 0;
+
+    println!("  Getting ready to iterate, start: {0}, len: {1}", seed.seed, seed.len);
+
+    while i <= (seed.seed + seed.len) {
+        println!("  getting location of seed: {}", i);
+        seed.soil = inner_fill_seed(m1, i);
+
+        seed.fertilizer = inner_fill_seed(m2, seed.soil);
+
+        seed.water = inner_fill_seed(m3, seed.fertilizer);
+
+        seed.light = inner_fill_seed(m4, seed.water);
+
+        seed.temperature = inner_fill_seed(m5, seed.light);
+
+        seed.humidity = inner_fill_seed(m6, seed.temperature);
+
+        seed.location = inner_fill_seed(m7, seed.humidity);
+
+        if i == seed.seed || seed.location < lowestlocation {
+            lowestlocation = seed.location;
+        }
+        
+        i = i + 1;
+    }
+
+    seed.location = lowestlocation;
+
+    seed
+}
+
