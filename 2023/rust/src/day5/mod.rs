@@ -149,6 +149,25 @@ fn get_mapping(_input: &Vec<String>, map_i: usize, next_map_i: usize) -> Vec<Map
         }).collect()
 }
 
+/// reddit solution :: check edges
+/// seeds: 79 14 55 13 -- seeds #79 and #55 should be checked
+// seed-to-soil map:
+// 50 98 2  -- seed #98 is outside "seeds" ranges
+          //-- seed #100 is outside "seeds"
+// 52 50 48 -- seed #50 is outside "seeds" ranges
+          //-- seed #98 is outside "seeds"
+// soil-to-fertilizer map:
+// 0 15 37 -- soil #15 -> seed #15  -> not in the "seeds"
+         //-- soil #52 -> seed #50  -> not in the "seeds"
+// 37 52 2 -- soil #52 -> seed #50  -> not in the "seeds"
+         //-- soil #54 -> seed #52  -> not in the "seeds"
+// 39 0 15 -- soil #0  -> seed #0   -> not in the "seeds"
+         //-- soil #15  -> seed #15 -> not in the "seeds"
+// fertilizer-to-water map:
+// 49 53 8 -- fertilizer #53 -> soil #53 -> Seed #51 is in the "seeds" so should be checked
+         //-- fertilizer #61 -> soil #61 -> Seed #59 is in the "seeds", so should be checked
+// ...etc
+//
 pub fn day5_2(_input: &Vec<String>) -> u32 {
     let p1 = _input.iter().position(|l| l.contains("seed-to-soil")).unwrap();
     let p2 = _input.iter().position(|l| l.contains("soil-to-fertilizer")).unwrap();
@@ -169,7 +188,7 @@ pub fn day5_2(_input: &Vec<String>) -> u32 {
 
     let seeds_filled: Vec<Seed> = seeds.iter().map(|s| fill_seed_2(&s, &p1_map, &p2_map, &p3_map, &p4_map, &p5_map, &p6_map, &p7_map)).collect();
 
-    seeds_filled.clone().into_iter().for_each(|s| println!("seed: {0}, soil: {1}, fert: {2}, wat: {3}, lig: {4}, tem: {5}, hum: {6}, location: {7}", s.seed, s.soil, s.fertilizer, s.water, s.light, s.temperature, s.humidity, s.location));
+    seeds_filled.clone().into_iter().for_each(|s| println!("seed: {0}, len: {8}, soil: {1}, fert: {2}, wat: {3}, lig: {4}, tem: {5}, hum: {6}, location: {7}", s.seed, s.soil, s.fertilizer, s.water, s.light, s.temperature, s.humidity, s.location, s.len));
 
     let mut location = seeds_filled.last().unwrap().location;
     for seed in seeds_filled {
@@ -226,13 +245,13 @@ fn fill_seed_2(_seed: &Seed, m1: &Vec<Mapping>, m2: &Vec<Mapping>, m3: &Vec<Mapp
     let mut seed = _seed.to_owned().clone();
 
     // Loop to get the location for all the range, and return the lowest one
-    let mut i = seed.seed;
     let mut lowestlocation = 0;
+    let range = seed.seed..(seed.seed + seed.len);
 
     println!("  Getting ready to iterate, start: {0}, len: {1}", seed.seed, seed.len);
 
-    while i <= (seed.seed + seed.len) {
-        println!("  getting location of seed: {}", i);
+   // while i <= (seed.seed + seed.len) {
+    for i in range {
         seed.soil = inner_fill_seed(m1, i);
 
         seed.fertilizer = inner_fill_seed(m2, seed.soil);
@@ -250,8 +269,6 @@ fn fill_seed_2(_seed: &Seed, m1: &Vec<Mapping>, m2: &Vec<Mapping>, m3: &Vec<Mapp
         if i == seed.seed || seed.location < lowestlocation {
             lowestlocation = seed.location;
         }
-        
-        i = i + 1;
     }
 
     seed.location = lowestlocation;
