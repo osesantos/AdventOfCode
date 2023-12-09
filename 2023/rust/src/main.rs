@@ -88,6 +88,7 @@ fn main() {
         println!("day7.1 sample - {0}", day7_1(&get_input_sample("day7")));
         println!("day7.1        - {0}", day7_1(&get_input("day7")));
         println!("day7.2 sample - {0}", day7_2(&get_input_sample("day7")));
+        // cant figure out the solution, have to refactore the whole thing to use hex
         println!("day7.2        - {0}", day7_2(&get_input("day7")));
         println!("");
     }
