@@ -1,0 +1,16 @@
+--------------------------
+   Advent of Code 2023
+
+day8.1 sample - 6
+day8.1        - 12737
+active nodes:
+   11A = (11B, XXX)
+   22A = (22B, XXX)
+counter: 2, active_nodes_len: 2
+active nodes:
+   11B = (XXX, 11Z)
+   22B = (22C, 22C)
+counter: 3, active_nodes_len: 2
+active nodes:
+   11B
+   22C = (22Z, 22Z)

@@ -6,6 +6,7 @@ use crate::{
     day5::{day5_1, day5_2_2}, 
     day6::{day6_1, day6_2}, 
     day7::{day7_1, day7_2}, 
+    day8::{day8_1, day8_2}, 
     utils::{get_input_sample, get_input, get_input_str, get_input_sample_str}
 };
 
@@ -19,6 +20,7 @@ mod day4;
 mod day5;
 mod day6;
 mod day7;
+mod day8;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -90,6 +92,14 @@ fn main() {
         println!("day7.2 sample - {0}", day7_2(&get_input_sample("day7")));
         // cant figure out the solution, have to refactore the whole thing to use hex
         println!("day7.2        - {0}", day7_2(&get_input("day7")));
+        println!("");
+    }
+    if day == "day8" {
+        println!("");
+        println!("day8.1 sample - {0}", day8_1(&get_input_sample("day8")));
+        println!("day8.1        - {0}", day8_1(&get_input("day8")));
+        println!("day8.2 sample - {0}", day8_2(get_input_sample("day8_2")));
+        println!("day8.2        - {0}", day8_2(get_input("day8")));
         println!("");
     }
 }
