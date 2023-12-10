@@ -7,6 +7,8 @@ use crate::{
     day6::{day6_1, day6_2}, 
     day7::{day7_1, day7_2}, 
     day8::{day8_1, day8_2}, 
+    day9::{day9_1, day9_2}, 
+    day10::{day10_1, day10_2}, 
     utils::{get_input_sample, get_input, get_input_str, get_input_sample_str}
 };
 
@@ -21,6 +23,8 @@ mod day5;
 mod day6;
 mod day7;
 mod day8;
+mod day9;
+mod day10;  
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -100,6 +104,22 @@ fn main() {
         println!("day8.1        - {0}", day8_1(&get_input("day8")));
         println!("day8.2 sample - {0}", day8_2(get_input_sample("day8_2")));
         println!("day8.2        - {0}", day8_2(get_input("day8")));
+        println!("");
+    }
+    if day == "day9" {
+        println!("");
+        println!("day9.1 sample - {0}", day9_1(&get_input_sample("day9")));
+        println!("day9.1        - {0}", day9_1(&get_input("day9")));
+        println!("day9.2 sample - {0}", day9_2(&get_input_sample("day9_2")));
+        println!("day9.2        - {0}", day9_2(&get_input("day9")));
+        println!("");
+    }
+    if day == "day10" {
+        println!("");
+        println!("day10.1 sample - {0}", day10_1(&get_input_sample("day10")));
+        println!("day10.1        - {0}", day10_1(&get_input("day10")));
+        println!("day10.2 sample - {0}", day10_2(&get_input_sample("day10_2")));
+        println!("day10.2        - {0}", day10_2(&get_input("day10")));
         println!("");
     }
 }
