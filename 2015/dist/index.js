@@ -25,6 +25,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const commander_1 = require("commander");
 const day1_1 = require("./day1");
+const day2_1 = require("./day2");
 const fs = __importStar(require("fs"));
 function main() {
     const program = new commander_1.Command();
@@ -34,6 +35,11 @@ function main() {
         const input = fs.readFileSync('./src/input/day1.txt', 'utf-8');
         (0, day1_1.day1_part1)(input);
         (0, day1_1.day1_part2)(input);
+    }
+    if (options.day == 'day2') {
+        const input = fs.readFileSync('./src/input/day2.txt', 'utf-8');
+        (0, day2_1.day2_part1)(input);
+        (0, day2_1.day2_part2)(input);
     }
 }
 main();
