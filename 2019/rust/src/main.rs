@@ -1,5 +1,6 @@
-include!("../src/day1/lib.rs");
+use day1::*;
 
 fn main() {
-    day1();
+    day1;
+    day2();
 }
