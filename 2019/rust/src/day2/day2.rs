@@ -9,32 +9,36 @@ pub fn day2() {
 }
 
 fn execute_part_1(input: &str) -> i32 {
-    let mut program = input
+    let program = input
         .split(',')
         .map(|x| x.parse::<i32>().unwrap())
         .collect::<Vec<i32>>();
 
+    let output = execute_program(program);
+
+    return output[0]
+}
+
+fn execute_program(mut input: Vec<i32>) -> Vec<i32> {
     let mut i = 0;
-    let mut first_i = 0;
     loop {
-        let operation = extract_operation(program.clone(), i).unwrap_or_else(|vec| vec);
+        let operation = extract_operation(input.clone(), i).unwrap_or_else(|vec| vec);
         let opcode = operation[0];
 
-        program = match opcode {
+        input = match opcode {
             // Program halts
             END_OPCODE => break,
             // Add
-            ADD_OPCODE => add(program.clone(), operation),
+            ADD_OPCODE => add(input.clone(), operation),
             // Multiply
-            MULTIPLY_OPCODE => multiply(program.clone(), operation),
+            MULTIPLY_OPCODE => multiply(input.clone(), operation),
             _ => continue
         };
 
         i = i + 4;
-        first_i = program[0]
     }
 
-    return first_i
+    input
 }
 
 fn extract_operation(program: Vec<i32>, index: usize) -> Result<Vec<i32>, Vec<i32>> {
@@ -83,6 +87,11 @@ mod day2 {
         assert_eq!(execute_part_1("2,3,0,3,99"), 2);
         assert_eq!(execute_part_1("2,4,4,5,99,0"), 2);
         assert_eq!(execute_part_1("1,1,1,4,99,5,6,0,99"), 30);
+
+        assert_eq!(execute_program(Vec::from([1,0,0,0,99])), [2,0,0,0,99]);
+        assert_eq!(execute_program(Vec::from([2,3,0,3,99])), [2,3,0,6,99]);
+        assert_eq!(execute_program(Vec::from([2,4,4,5,99,0])), [2,4,4,5,99,9801]);
+        assert_eq!(execute_program(Vec::from([1,1,1,4,99,5,6,0,99])), [30,1,1,4,2,5,6,0,99]);
     }
 
     #[test]
