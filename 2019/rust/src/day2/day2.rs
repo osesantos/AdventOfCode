@@ -9,10 +9,14 @@ pub fn day2() {
 }
 
 fn execute_part_1(input: &str) -> i32 {
-    let program = input
+    let mut program = input
         .split(',')
         .map(|x| x.parse::<i32>().unwrap())
         .collect::<Vec<i32>>();
+
+    // do initial replacements
+    program[1] = 12;
+    program[2] = 2;
 
     let output = execute_program(program);
 
