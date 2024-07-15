@@ -8,11 +8,15 @@ pub fn day2() {
     println!("day2.2 - {}", execute_part_2(input));
 }
 
-fn execute_part_1(input: &str) -> i32 {
-    let mut program = input
+fn parse_input(input: &str) -> Vec<i32> {
+    input
         .split(',')
         .map(|x| x.parse::<i32>().unwrap())
-        .collect::<Vec<i32>>();
+        .collect::<Vec<i32>>()
+}
+
+fn execute_part_1(input: &str) -> i32 {
+    let mut program = parse_input(input);
 
     // do initial replacements
     program[1] = 12;
@@ -54,7 +58,28 @@ fn extract_operation(program: Vec<i32>, index: usize) -> Result<Vec<i32>, Vec<i3
 }
 
 fn execute_part_2(input: &str) -> i32 {
-    0
+    let mut program = parse_input(input);
+    let mut noun = 0;
+    let mut verb = 0;
+    let expected_output = 19690720;
+
+
+    for n in 0..100 {
+        for v in 0..100 {
+            program[1] = n;
+            program[2] = v;
+
+            let output = execute_program(program.clone());
+
+            if output[0] == expected_output {
+                noun = n;
+                verb = v;
+                break;
+            }
+        }
+    }
+
+    100 * noun + verb
 }
 
 fn add(mut program: Vec<i32>, operation: Vec<i32>) -> Vec<i32> {
@@ -99,5 +124,6 @@ mod day2 {
     }
 
     #[test]
-    fn assert_2() {}
+    fn assert_2() {
+    }
 }
