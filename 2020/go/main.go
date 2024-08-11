@@ -1,7 +1,43 @@
 package main
 
-impot "fmt"
+import (
+	"adventofcode-2020/day1"
+	"adventofcode-2020/day2"
+	"bufio"
+	"fmt"
+	"os"
+)
+
+func getInputLines(path string) []string {
+	readFile, err := os.Open(path)
+	if err != nil {
+		panic(fmt.Sprintf("Unable to open file %s", path))
+	}
+
+	fileScanner := bufio.NewScanner(readFile)
+	fileScanner.Split(bufio.ScanLines)
+	var fileLines []string
+
+	for fileScanner.Scan() {
+		fileLines = append(fileLines, fileScanner.Text())
+	}
+
+	readFile.Close()
+
+	return fileLines
+}
 
 func main() {
-  fmt.Println("Hello, World!")
+	fmt.Println("#########################################################################")
+	fmt.Println("                        adventofcode-2020")
+	fmt.Println("#########################################################################")
+
+	// Day 1
+	fmt.Println("Day1.1 - ", day1.Day1Part1(getInputLines("day1/input")))
+	fmt.Println("Day1.2 - ", day1.Day1Part2(getInputLines("day1/input")))
+
+	// Day 2
+	fmt.Println("Day2.1 - ", day2.Day2Part1(getInputLines("day2/input")))
+	fmt.Println("Day2.2 - ", day2.Day2Part2(getInputLines("day2/input")))
+
 }
