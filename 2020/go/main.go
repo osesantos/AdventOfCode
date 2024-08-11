@@ -3,6 +3,7 @@ package main
 import (
 	"adventofcode-2020/day1"
 	"adventofcode-2020/day2"
+	"adventofcode-2020/day3"
 	"bufio"
 	"fmt"
 	"os"
@@ -39,5 +40,9 @@ func main() {
 	// Day 2
 	fmt.Println("Day2.1 - ", day2.Day2Part1(getInputLines("day2/input")))
 	fmt.Println("Day2.2 - ", day2.Day2Part2(getInputLines("day2/input")))
+
+	// Day 3
+	fmt.Println("Day3.1 - ", day3.Day3Part1(getInputLines("day3/input")))
+	fmt.Println("Day3.2 - ", day3.Day3Part2(getInputLines("day3/input")))
 
 }
