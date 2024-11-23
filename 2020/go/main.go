@@ -4,6 +4,7 @@ import (
 	"adventofcode-2020/day1"
 	"adventofcode-2020/day2"
 	"adventofcode-2020/day3"
+	"adventofcode-2020/day4"
 	"bufio"
 	"fmt"
 	"os"
@@ -45,4 +46,7 @@ func main() {
 	fmt.Println("Day3.1 - ", day3.Day3Part1(getInputLines("day3/input")))
 	fmt.Println("Day3.2 - ", day3.Day3Part2(getInputLines("day3/input")))
 
+	// Day 4
+	fmt.Println("Day4.1 - ", day4.Day4Part1(getInputLines("day4/input")))
+	fmt.Println("Day4.2 - ", day4.Day4Part2(getInputLines("day4/input")))
 }

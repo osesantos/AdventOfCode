@@ -56,6 +56,46 @@ func Day3Part1(input model.Input) int {
 	return treeCounter
 }
 
+type slope struct {
+	right int
+	down  int
+}
+
 func Day3Part2(input model.Input) int {
-	return 0
+	slopes := []slope{
+		{1, 1},
+		{3, 1},
+		{5, 1},
+		{7, 1},
+		{1, 2},
+	}
+
+	slopeResults := []int{}
+	expandedInput := getInputExpanded(input)
+
+	for _, s := range slopes {
+		treeCounter := 0
+		x := 0
+
+		for i, row := range expandedInput {
+			if i%s.down != 0 {
+				continue
+			}
+
+			if i == 0 {
+				x = x + s.right
+				continue
+			}
+
+			if hasTreeInRow(x, row) {
+				treeCounter++
+			}
+
+			x = x + s.right
+		}
+
+		slopeResults = append(slopeResults, treeCounter)
+	}
+
+	return slopeResults[0] * slopeResults[1] * slopeResults[2] * slopeResults[3] * slopeResults[4]
 }
