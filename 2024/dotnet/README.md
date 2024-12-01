@@ -17,7 +17,7 @@ dotnet test
 
 ## Generate Day
 ```bash
-dotnet run --project AoC -- generate 1
+dotnet run --project AoC -- --generate 1
 ```
 
 ## Project Structure

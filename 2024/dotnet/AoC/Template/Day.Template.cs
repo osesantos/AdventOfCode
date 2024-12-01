@@ -12,15 +12,15 @@ public static class Template {
 
     public static void Run() {
         Console.WriteLine("Template");
-        Console.WriteLine($"Part1 - {Part1()}");
-        Console.WriteLine($"Part2 - {Part2()}");
+        Console.WriteLine($"Part1 - {Part1(Lines)}");
+        Console.WriteLine($"Part2 - {Part2(Lines)}");
     }
 
-    public static string Part1() {
+    public static string Part1(string[] input) {
         return "";
     }
 
-    public static string Part2() {
+    public static string Part2(string[] input) {
         return "";
     }
 }
