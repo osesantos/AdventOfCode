@@ -7,14 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Days\" />
-    <Folder Include="Inputs\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NUnit" Version="4.2.2" />
-  </ItemGroup>
-  
-
 </Project>

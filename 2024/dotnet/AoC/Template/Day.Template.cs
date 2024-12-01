@@ -1,5 +1,4 @@
 using AoC.Utils;
-using NUnit.Framework;
 
 namespace AoC.Template;
 
@@ -17,25 +16,11 @@ public static class Template {
         Console.WriteLine($"Part2 - {Part2()}");
     }
 
-    internal static string Part1() {
+    public static string Part1() {
         return "";
     }
 
-    internal static string Part2() {
+    public static string Part2() {
         return "";
     }
 }
-
-[TestFixture]
-public static class TemplateTests {
-        
-    [Test]
-    public static void TestPart1() {
-        Assert.That(Template.Part1(), Is.EqualTo(""));
-    }
-    
-    [Test]
-    public static void TestPart2() {
-        Assert.That(Template.Part2(), Is.EqualTo(""));
-    }
-} 

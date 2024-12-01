@@ -7,6 +7,7 @@ internal static class Program {
           if (args.Length == 2 && (args[0] == "--generate" || args[0] == "-g")) {
                if (int.TryParse(args[1], out var day)) {
                     Utils.Generator.GenerateDay(day);
+                    Utils.Generator.GenerateTests(day);
                }
           }
           else {
