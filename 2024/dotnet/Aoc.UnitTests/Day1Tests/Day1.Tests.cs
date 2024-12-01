@@ -21,6 +21,15 @@ public static class Day1Tests {
     
     [Test]
     public static void TestPart0() {
-        Assert.That(Day1.Part2([]), Is.EqualTo(""));
+        var input = $"""
+                     3   4
+                     4   3
+                     2   5
+                     1   3
+                     3   9
+                     3   3
+                     """.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
+        
+        Assert.That(Day1.Part2(input), Is.EqualTo("31"));
     }
 } 

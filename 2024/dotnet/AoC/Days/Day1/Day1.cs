@@ -43,6 +43,19 @@ public static class Day1 {
     }
 
     public static string Part2(string[] input) {
-        return "";
+        List<int> list1 = [];
+        List<int> list2 = [];
+        
+        foreach (var line in input) {
+            var split = line.Split("   ");
+            var first = int.Parse(split.First());
+            var last = int.Parse(split.Last());
+            list1.Add(first);
+            list2.Add(last);
+        }
+
+        var sum = list1.Sum(num => num * list2.Count(n => n == num));
+
+        return $"{sum}";
     }
 }
