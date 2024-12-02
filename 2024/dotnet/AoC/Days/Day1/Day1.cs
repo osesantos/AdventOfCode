@@ -16,17 +16,8 @@ public static class Day1 {
         Console.WriteLine($"Part2 - {Part2(Lines)}");
     }
 
-    public static string Part1(string[] input) {
-        List<int> list1 = [];
-        List<int> list2 = [];
-        
-        foreach (var line in input) {
-            var split = line.Split("   ");
-            var first = int.Parse(split.First());
-            var last = int.Parse(split.Last());
-            list1.Add(first);
-            list2.Add(last);
-        }
+    public static int Part1(string[] input) {
+        var (list1, list2) = ParseInput(input);
 
         var list1Ordered = list1.Order().ToArray();
         var list2Ordered = list2.Order().ToArray();
@@ -35,14 +26,18 @@ public static class Day1 {
             throw new Exception("list lengths are different!");
         }
 
-        var sum = list1Ordered
+        return list1Ordered
             .Select((t, i) => t > list2Ordered[i] ? t - list2Ordered[i] : list2Ordered[i] - t)
             .Sum();
+        }
 
-        return $"{sum}";
+    public static int Part2(string[] input) {
+        var (list1, list2) = ParseInput(input);
+        
+        return list1.Sum(num => num * list2.Count(n => n == num));
     }
 
-    public static string Part2(string[] input) {
+    private static (List<int>, List<int>) ParseInput(string[] input) {
         List<int> list1 = [];
         List<int> list2 = [];
         
@@ -54,8 +49,6 @@ public static class Day1 {
             list2.Add(last);
         }
 
-        var sum = list1.Sum(num => num * list2.Count(n => n == num));
-
-        return $"{sum}";
+        return (list1, list2);
     }
 }

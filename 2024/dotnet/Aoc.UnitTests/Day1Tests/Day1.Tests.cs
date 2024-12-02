@@ -16,7 +16,7 @@ public static class Day1Tests {
                      3   3
                      """.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
         
-        Assert.That(Day1.Part1(input), Is.EqualTo("11"));
+        Assert.That(Day1.Part1(input), Is.EqualTo(11));
     }
     
     [Test]
@@ -30,6 +30,6 @@ public static class Day1Tests {
                      3   3
                      """.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
         
-        Assert.That(Day1.Part2(input), Is.EqualTo("31"));
+        Assert.That(Day1.Part2(input), Is.EqualTo(31));
     }
 } 
