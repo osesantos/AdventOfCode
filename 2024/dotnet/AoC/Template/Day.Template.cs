@@ -16,11 +16,11 @@ public static class Template {
         Console.WriteLine($"Part2 - {Part2(Lines)}");
     }
 
-    public static string Part1(string[] input) {
-        return "";
+    public static int Part1(string[] input) {
+        return 0;
     }
 
-    public static string Part2(string[] input) {
-        return "";
+    public static int Part2(string[] input) {
+        return 0;
     }
 }
