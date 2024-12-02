@@ -20,7 +20,7 @@ public static class Day1Tests {
     }
     
     [Test]
-    public static void TestPart0() {
+    public static void TestPart2() {
         var input = $"""
                      3   4
                      4   3
