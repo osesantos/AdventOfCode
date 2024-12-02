@@ -23,7 +23,7 @@ public static class Day2 {
     }
 
     public static int Part2(string[] input) {
-        return input.ParseInput().Count(line => line.Select(int.Parse).ToArray().CleanSingleBadLevels().IsSafe());
+        return input.ParseInput().Count(line => line.Select(int.Parse).ToArray().IsSafeReport());
     }
 
     private static bool IsSafe(this int[] lineNums, bool useBadLevels = false) {
@@ -58,35 +58,59 @@ public static class Day2 {
         return true;
     }
 
-    private static int[] CleanSingleBadLevels(this int[] line) {
-        var newLine = line.ToList();
-        var badLevel = -1;
-
-        if (line.AreAllElementsUnsafe() != -1) {
-            newLine.Remove(line.AreAllElementsUnsafe());
-            return newLine.ToArray();
+    private static bool IsSafeReport(this int[] line) {
+        if (IsSafe2(line)) {
+            Console.WriteLine($"{JsonSerializer.Serialize(line)} - safe!");
+            return true;
         }
 
-        if (line.Direction() > 0) {
-            badLevel = line.AreAllElemsIncreasing();
+        var canBeMadeSafe = false;
+        for (var i = 0; i < line.Length; i++) {
+            var modifiedLine = line.RemoveLevel(i);
+            if (IsSafe2(modifiedLine.ToArray())) {
+                canBeMadeSafe = true;
+                break;
+            }
+        }
+        if (canBeMadeSafe) {
+            Console.WriteLine($"{JsonSerializer.Serialize(line)} - safe!");
+            return true;
+        }
 
-            if (badLevel == -1) {
-                return newLine.ToArray();
+        Console.WriteLine($"{JsonSerializer.Serialize(line)} - not safe!");
+        return false;
+    }
+
+    private static bool IsSafe2(int[] report) {
+        if (report.Length < 2) {
+            return true;
+        }
+
+        var increasing = true;
+        var decreasing = true;
+
+        for (var i = 1; i < report.Length; i++) {
+            if (Math.Abs(report[i] - report[i - 1]) is < 1 or > 3) {
+                return false;
             }
 
-            newLine.Remove(badLevel);
-
-            return newLine.ToArray();
+            if (report[i] <= report[i - 1]) {
+                increasing = false;
+            }
+            if (report[i] >= report[i - 1]) {
+                decreasing = false;
+            }
+            if (!increasing && !decreasing) {
+                return false;
+            }
         }
 
-        badLevel = line.AreAllElemsDecreasing();
+        return true;
+    }
 
-        if (badLevel == -1) {
-            return newLine.ToArray();
-        }
-
-        newLine.Remove(badLevel);
-
+    private static int[] RemoveLevel(this int[] line, int index) {
+        var newLine = line.ToList();
+        newLine.RemoveAt(index);
         return newLine.ToArray();
     }
 
@@ -118,31 +142,6 @@ public static class Day2 {
         }
 
         return -1;
-    }
-
-    /// <summary>
-    /// Check if all elements are safe and return the i that is not safe
-    /// </summary>
-    /// <param name="line"></param>
-    /// <returns></returns>
-    private static int AreAllElementsUnsafe(this int[] line) {
-        for (var i = 1; i < line.Length; i++) {
-            var newOperation = line[i] - line[i - 1];
-            if (!newOperation.IsOperationSafe()) {
-                return line[i];
-            }
-        }
-
-        return -1;
-    }
-
-    /// <summary>
-    /// Provides the direction of the line
-    /// </summary>
-    /// <param name="line"></param>
-    /// <returns>returns above 0 if increasing below 0 if decreasing</returns>
-    private static int Direction(this int[] line) {
-        return line[1] - line[0];
     }
 
     private static bool IsOperationSafe(this int operation) => operation is >= 1 and <= 3 || -operation is >= 1 and <= 3;
