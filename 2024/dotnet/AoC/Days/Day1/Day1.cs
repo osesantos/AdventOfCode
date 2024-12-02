@@ -7,7 +7,7 @@ namespace AoC.Days.Day1;
 /// When using replace Day1 with the day
 /// </summary>
 public static class Day1 {
-    
+
     private static string[] Lines => "Day1".GetInputLines();
 
     public static void Run() {
@@ -33,14 +33,14 @@ public static class Day1 {
 
     public static int Part2(string[] input) {
         var (list1, list2) = ParseInput(input);
-        
+
         return list1.Sum(num => num * list2.Count(n => n == num));
     }
 
     private static (List<int>, List<int>) ParseInput(string[] input) {
         List<int> list1 = [];
         List<int> list2 = [];
-        
+
         foreach (var line in input) {
             var split = line.Split("   ");
             var first = int.Parse(split.First());

@@ -7,7 +7,7 @@ namespace AoC.Template;
 /// When using replace Template with the day
 /// </summary>
 public static class Template {
-    
+
     private static string[] Lines => "Template".GetInputLines();
 
     public static void Run() {

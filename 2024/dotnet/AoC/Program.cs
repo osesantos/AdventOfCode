@@ -1,7 +1,7 @@
 ﻿namespace AoC;
 
 internal static class Program {
-     
+
      public static void Main(string[] args) {
           // take arg --generate or -g and a number to generate a day
           if (args.Length == 2 && (args[0] == "--generate" || args[0] == "-g")) {
