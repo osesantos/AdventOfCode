@@ -21,7 +21,25 @@ public static class Day3 {
     }
 
     public static int Part2(string[] input) {
-        return 0;
+        return input.ScanAndFilterMul().Select(ConvertMul).Sum(mul => Mul(mul.Item1, mul.Item2));
+    }
+
+    private static string[] ScanAndFilterMul(this string[] input) {
+        var mAndDos = input.SelectMany(line => line.ScanMulAndDos()).ToArray();
+        var canMul = true;
+        var newList = new List<string>();
+        foreach (var elem in mAndDos) {
+            if (elem.Contains("do()")) {
+                canMul = true;
+            } else if (elem.Contains("don't()")) {
+                canMul = false;
+            }
+
+            if (canMul && elem.Contains("mul")) {
+                newList.Add(elem);
+            }
+        }
+        return newList.ToArray();
     }
 
     private static int Mul(int a, int b) => a * b;
@@ -33,4 +51,7 @@ public static class Day3 {
 
     private static string[] ScanMul(this string line) =>
         Regex.Matches(line, @"mul\(\d+,\d+\)").Select(match => match.Value).ToArray();
+
+    private static string[] ScanMulAndDos(this string line) =>
+        Regex.Matches(line, @"mul\(\d+,\d+\)|do\(\)|don\'t\(\)").Select(match => match.Value).ToArray();
 }
