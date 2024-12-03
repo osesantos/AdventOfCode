@@ -1,4 +1,5 @@
 using AoC.Days.Day3;
+
 namespace Aoc.UnitTests.Day3Tests;
 
 [TestFixture]

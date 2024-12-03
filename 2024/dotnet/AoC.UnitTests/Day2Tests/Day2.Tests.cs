@@ -1,4 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
 using AoC.Days.Day2;
 
 namespace Aoc.UnitTests.Day2Tests;
