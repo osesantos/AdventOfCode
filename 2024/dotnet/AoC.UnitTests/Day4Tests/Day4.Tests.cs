@@ -1,4 +1,4 @@
-using AoC.Day4;
+using AoC.Days.Day4;
 
 namespace Aoc.UnitTests.Day4Tests;
 

@@ -29,16 +29,22 @@ public static class Day4 {
         count += input.Sum(x => x.CountMatchesReverse());
 
         // Get vertical XMAS count
-        count += input.RotateClockwise45().RotateClockwise45().Sum(x => x.CountMatches());
+        count += input.ConvertToMatrix().RotateClockWise().ConvertToLines().Sum(x => x.CountMatches());
 
         // Get vertical Reverse XMAS count
-        count += input.RotateClockwise45().RotateClockwise45().Sum(x => x.CountMatchesReverse());
+        count += input.ConvertToMatrix().RotateClockWise().ConvertToLines().Sum(x => x.CountMatchesReverse());
 
         // Get diagonal XMAS count
-        count += input.RotateClockwise45().Sum(x => x.CountMatches());
+        count += input.ConvertToMatrix().RotateClockwise45().ConvertToLines().Sum(x => x.CountMatches());
 
         // Get diagonal Reverse XMAS count
-        count += input.RotateClockwise45().Sum(x => x.CountMatchesReverse());
+        count += input.ConvertToMatrix().RotateClockwise45().ConvertToLines().Sum(x => x.CountMatchesReverse());
+
+        // Get diagonal XMAS count
+        count += input.ConvertToMatrix().RotateClockwise45(3).ConvertToLines().Sum(x => x.CountMatches());
+
+        // Get diagonal Reverse XMAS count
+        count += input.ConvertToMatrix().RotateClockwise45(3).ConvertToLines().Sum(x => x.CountMatchesReverse());
 
         return count;
     }
@@ -55,52 +61,38 @@ public static class Day4 {
         return Regex.Matches(line, @"XMAS").Count;
     }
 
-    /// <summary>
-    /// Rotate the line matrix so that column 0 becomes row 0, column 1 becomes row 1, etc.
-    /// </summary>
-    /// <param name="lines"></param>
-    /// <returns></returns>
-    private static string[] Rotate(this string[] lines) {
-        var rotated = new string[lines.Length];
-        for (var i = 0; i < lines.Length; i++) {
-            var sb = new StringBuilder();
-            foreach (var t in lines) {
-                sb.Append(t[i]);
+    private static char[,] RotateClockwise45(this char[,] matrix, int times = 1) {
+        var newMatrix = matrix;
+        
+        for (var i = 0; i < times; i++) {
+            newMatrix = Rotate();
+        }
+
+        return newMatrix;
+        
+        char[,] Rotate() {
+            var n = matrix.GetLength(0); // Assuming a square matrix
+            var newLength = 2 * n - 1;
+            var rotated = new string[newLength];
+
+            // Initialize the rotated array
+            for (var i = 0; i < newLength; i++) {
+                rotated[i] = new string(' ', newLength);
             }
-            rotated[i] = sb.ToString();
-        }
-        return rotated;
-    }
 
-    /// <summary>
-    /// Rotate the line matrix 45 degrees clockwise so that diagonal 0 becomes row 0, diagonal 1 becomes row 1, etc.
-    /// </summary>
-    /// <param name="lines"></param>
-    /// <returns></returns>
-    private static string[] RotateClockwise45(this string[] lines) {
-        var matrix = lines.ConvertToMatrix();
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    var newRow = i + j;
+                    var newCol = n - 1 + (j - i);
 
-        var n = matrix.GetLength(0); // Assuming a square matrix
-        var newLength = 2 * n - 1;
-        var rotated = new string[newLength];
-
-        // Initialize the rotated array
-        for (var i = 0; i < newLength; i++) {
-            rotated[i] = new (' ', newLength);
-        }
-
-        for (var i = 0; i < n; i++) {
-            for (var j = 0; j < n; j++) {
-                var newRow = i + j;
-                var newCol = n - 1 + (j - i);
-
-                var rowChars = rotated[newRow].ToCharArray();
-                rowChars[newCol] = matrix[i, j];
-                rotated[newRow] = new (rowChars);
+                    var rowChars = rotated[newRow].ToCharArray();
+                    rowChars[newCol] = matrix[i, j];
+                    rotated[newRow] = new string(rowChars);
+                }
             }
-        }
 
-        return rotated;
+            return rotated.ConvertToMatrix();
+        }
     }
 
     private static char[,] ConvertToMatrix(this string[] lines) {
@@ -111,5 +103,39 @@ public static class Day4 {
             }
         }
         return matrix;
+    }
+    
+    private static string[] ConvertToLines(this char[,] matrix) {
+        var lines = new string[matrix.GetLength(0)];
+        for (var i = 0; i < matrix.GetLength(0); i++) {
+            var sb = new StringBuilder();
+            for (var j = 0; j < matrix.GetLength(1); j++) {
+                sb.Append(matrix[i, j]);
+            }
+            lines[i] = sb.ToString();
+        }
+        return lines.Select(line => line.Replace(" ", "")).ToArray();
+    }
+
+    private static char[,] RotateClockWise(this char[,] matrix, int times = 1) {
+        var newMatrix = matrix;
+        
+        for (var i = 0; i < times; i++) {
+            newMatrix = Rotate();
+        }
+
+        return newMatrix;
+
+        char[,] Rotate() {
+            var n = matrix.GetLength(0);
+            var rotated = new char[n, n];
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    rotated[i, j] = matrix[n - j - 1, i];
+                }
+            }
+
+            return rotated;
+        }
     }
 }
