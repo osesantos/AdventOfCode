@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using AoC.Utils;
 
@@ -20,6 +21,7 @@ public static class Day4 {
 
     public static int Part1(string[] input) {
         var count = 0;
+
         // Get horizontal XMAS count
         count += input.Sum(x => x.CountMatches());
 
@@ -27,16 +29,16 @@ public static class Day4 {
         count += input.Sum(x => x.CountMatchesReverse());
 
         // Get vertical XMAS count
-        count += input.Rotate().Sum(x => x.CountMatches());
+        count += input.RotateClockwise45().RotateClockwise45().Sum(x => x.CountMatches());
 
         // Get vertical Reverse XMAS count
-        count += input.Rotate().Sum(x => x.CountMatchesReverse());
+        count += input.RotateClockwise45().RotateClockwise45().Sum(x => x.CountMatchesReverse());
 
         // Get diagonal XMAS count
-        count += input.Rotate45().Sum(x => x.CountMatches());
+        count += input.RotateClockwise45().Sum(x => x.CountMatches());
 
         // Get diagonal Reverse XMAS count
-        count += input.Rotate45().Sum(x => x.CountMatchesReverse());
+        count += input.RotateClockwise45().Sum(x => x.CountMatchesReverse());
 
         return count;
     }
@@ -75,16 +77,39 @@ public static class Day4 {
     /// </summary>
     /// <param name="lines"></param>
     /// <returns></returns>
-    private static string[] Rotate45(this string[] lines) {
-        var rotated = new string[lines.Length];
-        for (var i = 0; i < lines.Length; i++) {
-            var sb = new StringBuilder();
-            for (var j = 0; j < lines.Length; j++) {
-                sb.Append(lines[j][(i + j) % lines.Length]);
-            }
-            rotated[i] = sb.ToString();
+    private static string[] RotateClockwise45(this string[] lines) {
+        var matrix = lines.ConvertToMatrix();
+
+        var n = matrix.GetLength(0); // Assuming a square matrix
+        var newLength = 2 * n - 1;
+        var rotated = new string[newLength];
+
+        // Initialize the rotated array
+        for (var i = 0; i < newLength; i++) {
+            rotated[i] = new (' ', newLength);
         }
+
+        for (var i = 0; i < n; i++) {
+            for (var j = 0; j < n; j++) {
+                var newRow = i + j;
+                var newCol = n - 1 + (j - i);
+
+                var rowChars = rotated[newRow].ToCharArray();
+                rowChars[newCol] = matrix[i, j];
+                rotated[newRow] = new (rowChars);
+            }
+        }
+
         return rotated;
     }
 
+    private static char[,] ConvertToMatrix(this string[] lines) {
+        var matrix = new char[lines.Length, lines.Length];
+        for (var i = 0; i < lines.Length; i++) {
+            for (var j = 0; j < lines.Length; j++) {
+                matrix[i, j] = lines[i][j];
+            }
+        }
+        return matrix;
+    }
 }
