@@ -42,6 +42,6 @@ public static class Day5Tests {
 
     [Test]
     public static void TestPart2() {
-        Assert.That(Day5.Part2(Input), Is.EqualTo(0));
+        Assert.That(Day5.Part2(Input), Is.EqualTo(123));
     }
 }

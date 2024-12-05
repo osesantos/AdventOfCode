@@ -18,11 +18,17 @@ public static class Day5 {
     }
 
     public static int Part1(string[] input) {
-        return ExtractPagesToProduce(input).FilterInvalidLines(ExtractOrderRules(input).ConvertOrderRulesToTrees()).SumMiddleNum();
+        return ExtractPagesToProduce(input).FilterValidLines(ExtractOrderRules(input).ConvertOrderRulesToTrees()).SumMiddleNum();
     }
 
     public static int Part2(string[] input) {
-        return 0;
+        var rules = input.ExtractOrderRules().ConvertOrderRulesToTrees();
+        return input
+            .ExtractPagesToProduce()
+            .Except(input.ExtractPagesToProduce().FilterValidLines(rules))
+            .ToArray()
+            .FixInvalidLines(rules)
+            .SumMiddleNum();
     }
 
     private static string[] ExtractOrderRules(this string[] lines) =>
@@ -55,7 +61,7 @@ public static class Day5 {
         return trees;
     }
 
-    private static string[] FilterInvalidLines(this string[] lines, IDictionary<int, List<int>> rules) {
+    private static string[] FilterValidLines(this string[] lines, IDictionary<int, List<int>> rules) {
         return lines.Where(line => {
             var elems = line.Split(",").Select(int.Parse).ToArray();
             var isLineValid = true;
@@ -92,5 +98,60 @@ public static class Day5 {
             }
             return lineSplit[(lineSplit.Length - 1) / 2];
         });
+    }
+
+    private static string[] FixInvalidLines(this string[] lines, IDictionary<int, List<int>> rules) {
+        var fixedLines = lines.Select(FixLine).ToArray();
+
+        var linesIdxToFix = GetInvalidLineIdx(fixedLines);
+        while (linesIdxToFix.Length != 0) {
+            foreach (var idx in linesIdxToFix) {
+                fixedLines[idx] = FixLine(fixedLines[idx]);
+            }
+            linesIdxToFix = GetInvalidLineIdx(fixedLines);
+        }
+
+        return fixedLines;
+
+        int[] GetInvalidLineIdx(string[] lineList) {
+            List<int> idx = [];
+            for (var i = 0; i < lineList.Length; i++) {
+                if (FilterValidLines([lineList[i]], rules).Length == 0) {
+                    idx.Add(i);
+                }
+            }
+            return idx.ToArray();
+        }
+
+        string FixLine(string line) {
+            var elems = line.Split(",").Select(int.Parse).ToArray();
+            var elemsToRotate = (-1, -1);
+
+            for (var i = 0; i < elems.Length; i++) {
+                if (!rules.TryGetValue(elems[i], out var subsequentElems)) {
+                    continue;
+                }
+
+                for (var j = i; j >= 0; j--) {
+                    if (!subsequentElems.Contains(elems[j])) {
+                        continue;
+                    }
+
+                    elemsToRotate = (i, j);
+                    break;
+                }
+            }
+
+            if (elemsToRotate.Item1 == -1 || elemsToRotate.Item2 == -1) {
+                return string.Join(",", elems);
+            }
+
+            var elem1 = elems[elemsToRotate.Item1];
+            var elem2 = elems[elemsToRotate.Item2];
+            elems[elemsToRotate.Item1] = elem2;
+            elems[elemsToRotate.Item2] = elem1;
+
+            return string.Join(",", elems);
+        }
     }
 }
