@@ -8,3 +8,5 @@ csharp_new_line_before_open_brace = accessors,anonymous_methods,anonymous_types,
 # ReSharper properties
 resharper_csharp_other_braces = end_of_line
 resharper_csharp_remove_blank_lines_near_braces_in_declarations = false
+
+resharper_unnecessary_whitespace_highlighting = warning
