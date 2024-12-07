@@ -7,7 +7,6 @@ namespace AoC.Days.Day6;
 /// </summary>
 public static class Day6 {
 
-
     private static string[] Lines => "Day6".GetInputLines();
 
     public static void Run() {
@@ -35,37 +34,50 @@ public static class Day6 {
         return map.Count('X');
     }
 
-    // TODO - This is a mess, needs to be refactored
-    // REFACTOR like it is explained in the part 2 documentation
     public static int Part2(string[] input) {
+        var obstructionsMap = input.CreateMap().MapWithObstructions();
+        var loopCount = 0;
+
         var map = input.CreateMap();
-        var stop = false;
-        var direction = Direction.Up;
-        List<(int, int)> loopObstructions = [];
-        while (!stop) {
-            try {
-                // TODO - this is a bit of a mess, should be refactored
-                // When the LoopObstruction is found we need to reset the map and start from the beginning
-                // Without considering all the previous loop obstructions
-                (var x, var y) = map.CanNextMoveBeLoopObstruction(map.GetCurrentPosition(), direction);
-                if ((x, y) != (-1, -1) && !loopObstructions.Contains((x, y))) {
-                    loopObstructions.Add((x, y));
+        DoALoopWithObstruction(map);
+        PrintMap(map);
+
+        for (var i = 0; i < obstructionsMap.Length; i++) {
+            for (var j = 0; j < obstructionsMap[i].Length; j++) {
+                try {
                     map = input.CreateMap();
-                    direction = Direction.Up;
+                    map[i][j] = map[i][j] != '#' ? 'O' : map[i][j];
+                    DoALoopWithObstruction(map);
                 }
-                map = map.Move(map.GetCurrentPosition(), direction);
-                map.PrintMap(loopObstructions);
-                Console.WriteLine("########################################");
-            } catch (Exception e) when("Out of bounds".Equals(e.Message)) {
-                stop = true;
-            } catch (Exception e) when("Hit a wall".Equals(e.Message)) {
-                direction = direction.GetNextDirection();
+                catch (Exception e) when ("Hit an obstruction".Equals(e.Message)) {
+                    loopCount++;
+                }
             }
         }
 
-        map.PrintMap(loopObstructions);
+        return loopCount;
+    }
 
-        return loopObstructions.Count;
+    private static void DoALoopWithObstruction(this char[][] map) {
+        var stop = false;
+        var direction = Direction.Up;
+        while (!stop) {
+            try {
+                map = map.Move2(map.GetCurrentPosition(), direction);
+            }
+            catch (Exception e) when ("Out of bounds".Equals(e.Message)) {
+                stop = true;
+            }
+            catch (Exception e) when ("No starting position found".Equals(e.Message)) {
+                stop = true;
+            }
+            catch (Exception e) when ("Hit a wall".Equals(e.Message)) {
+                direction = direction.GetNextDirection();
+            }
+            catch (Exception e) when ("Hit an obstruction".Equals(e.Message)) {
+                throw;
+            }
+        }
     }
 
     private enum Direction {
@@ -92,8 +104,11 @@ public static class Day6 {
             throw new Exception("Out of bounds");
         }
 
-        if (map[newPosition.Item1][newPosition.Item2] == '#') {
-            throw new Exception("Hit a wall");
+        switch (map[newPosition.Item1][newPosition.Item2]) {
+            case '#':
+                throw new Exception("Hit a wall");
+            case 'O':
+                throw new Exception("Hit an obstruction");
         }
 
         // set old position to X
@@ -103,6 +118,47 @@ public static class Day6 {
         map[newPosition.Item1][newPosition.Item2] = '^';
 
         return map;
+    }
+
+    private static char[][] Move2(this char[][] map, (int, int) currentPosition, Direction direction) {
+        var newPosition = currentPosition.GetNextPosition(direction);
+
+        if (IsPositionOutOfBounds(map, newPosition)) {
+            map[currentPosition.Item1][currentPosition.Item2] = GetChar(direction, map[currentPosition.Item1][currentPosition.Item2]);
+            throw new Exception("Out of bounds");
+        }
+
+        switch (map[newPosition.Item1][newPosition.Item2]) {
+            case '#':
+                var newDirection = direction.GetNextDirection();
+                var nextPosition = currentPosition.GetNextPosition(newDirection);
+                map[nextPosition.Item1][nextPosition.Item2] = '^';
+                map[currentPosition.Item1][currentPosition.Item2] = '+';
+                throw new Exception("Hit a wall");
+            case 'O':
+                throw new Exception("Hit an obstruction");
+        }
+
+        map[currentPosition.Item1][currentPosition.Item2] = GetChar(direction, map[currentPosition.Item1][currentPosition.Item2]);
+
+        // set new position
+        map[newPosition.Item1][newPosition.Item2] = '^';
+
+        return map;
+    }
+
+    private static char GetChar(Direction direction, char currentChar) {
+        if (currentChar is '+') {
+            return '+';
+        }
+
+        return direction switch {
+            Direction.Down => '|',
+            Direction.Up => '|',
+            Direction.Left => '-',
+            Direction.Right => '-',
+            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+        };
     }
 
     private static bool IsPositionOutOfBounds(this char[][] map, (int, int) position) {
@@ -124,11 +180,11 @@ public static class Day6 {
         return (-1, -1);
     }
 
-    private static char[][] CleanMap(this char[][] map) {
+    private static char[][] MapWithObstructions(this char[][] map) {
         for (var i = 0; i < map.Length; i++) {
             for (var j = 0; j < map[i].Length; j++) {
-                if (map[i][j] == 'X') {
-                    map[i][j] = '.';
+                if (map[i][j] != '#' && map[i][j] != '^') {
+                    map[i][j] = 'O';
                 }
             }
         }
@@ -173,7 +229,7 @@ public static class Day6 {
     private static void PrintMap(this char[][] map, List<(int, int)>? obstructionsToAdd = null) {
         var mapClone = map.Select(x => x.ToArray()).ToArray();
         if (obstructionsToAdd != null) {
-            foreach ((var x, var y) in obstructionsToAdd) {
+            foreach (var (x, y) in obstructionsToAdd) {
                 mapClone[x][y] = 'O';
             }
         }

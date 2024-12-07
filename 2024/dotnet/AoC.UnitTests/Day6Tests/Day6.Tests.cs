@@ -27,4 +27,14 @@ public static class Day6Tests {
     public static void TestPart2() {
         Assert.That(Day6.Part2(Input), Is.EqualTo(6));
     }
+
+    [Test]
+    public static void TestPart1_2() {
+        Assert.That(Day6_2.Part1(Input), Is.EqualTo(41));
+    }
+
+    [Test]
+    public static void TestPart2_2() {
+        Assert.That(Day6_2.Part2(Input), Is.EqualTo(6));
+    }
 }
