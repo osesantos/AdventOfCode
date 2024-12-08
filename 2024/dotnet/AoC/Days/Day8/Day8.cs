@@ -28,7 +28,8 @@ public static class Day8 {
             Console.WriteLine(line);
         }
         Console.WriteLine($"Number of AntiNodes: {counter}");
-        return CountAntiNodes(ParseInput(input));
+        //var count = CountAntiNodes(frequencies);
+        return counter;
     }
 
     public static int Part2(string[] input) {
@@ -138,7 +139,8 @@ public static class Day8 {
         var grid = new char[frequencies.First().GridSize.Item2, frequencies.First().GridSize.Item1];
         foreach (var frequency in frequencies) {
             foreach (var antenna in frequency.Antennas) {
-                grid[antenna.Y, antenna.X] = frequency.Char;
+                // not looking for the value of the frequency
+                // grid[antenna.Y, antenna.X] = frequency.Char;
             }
             foreach (var antiNode in frequency.GetAntiNodes()) {
                 grid[antiNode.Y, antiNode.X] = '#';
