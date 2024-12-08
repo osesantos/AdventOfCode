@@ -3,10 +3,12 @@
 
 # Microsoft .NET properties
 csharp_indent_braces = false
-csharp_new_line_before_open_brace = accessors,anonymous_methods,anonymous_types,control_blocks,events,indexers,lambdas,object_collection_array_initializers,properties
+csharp_new_line_before_open_brace = accessors,control_blocks,events,indexers,properties
 
 # ReSharper properties
 resharper_csharp_other_braces = end_of_line
+resharper_csharp_remove_blank_lines_near_braces_in_code = false
 resharper_csharp_remove_blank_lines_near_braces_in_declarations = false
+resharper_place_simple_initializer_on_single_line = false
 
 resharper_unnecessary_whitespace_highlighting = warning
