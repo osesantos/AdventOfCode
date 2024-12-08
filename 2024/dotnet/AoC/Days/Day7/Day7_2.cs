@@ -1,4 +1,3 @@
-using System.Text.Json;
 using AoC.Utils;
 
 namespace AoC.Days.Day7;
@@ -23,16 +22,16 @@ public static class Day7_2 {
             var result = line.GetResult();
             if (TryAll1(nums.Select(n => n.ToString()).ToArray(), result, "", 0)) {
                 count += result;
-            };
+            }
+
+            ;
         }
 
         return count;
     }
 
-    static bool TryAll1(string[] numbers, long target, string str, int index)
-    {
-        if (index == numbers.Length - 1)
-        {
+    static bool TryAll1(string[] numbers, long target, string str, int index) {
+        if (index == numbers.Length - 1) {
             str += numbers[index];
             return Evalute1(str, target);
         }
@@ -40,30 +39,30 @@ public static class Day7_2 {
         char[] ops = new char[] { '+', '*' };
 
         foreach (char op in ops)
-            if (TryAll1(numbers, target, str + numbers[index] + op.ToString(), index + 1)) return true;
+            if (TryAll1(numbers, target, str + numbers[index] + op.ToString(), index + 1))
+                return true;
 
         return false;
     }
-    static bool Evalute1(string exp, long target)
-    {
+
+    static bool Evalute1(string exp, long target) {
         long result = 0;
         long part = 0;
         bool isSum = true;
-        for (int i = 0; i < exp.Length; i++)
-        {
-            if (exp[i] >= '0' && exp[i] <= '9')
-            {
+        for (int i = 0; i < exp.Length; i++) {
+            if (exp[i] >= '0' && exp[i] <= '9') {
                 part = 10 * part + (int)(exp[i] - '0');
             }
-            else
-            {
+            else {
                 if (isSum) result += part;
                 else result *= part;
                 part = 0;
                 isSum = exp[i] == '+';
             }
+
             if (result > target) return false;
         }
+
         if (isSum) result += part;
         else result *= part;
 
@@ -85,16 +84,16 @@ public static class Day7_2 {
             var result = line.GetResult();
             if (TryAll2(nums.Select(n => n.ToString()).ToArray(), result, "", 0)) {
                 count += result;
-            };
+            }
+
+            ;
         }
 
         return count;
     }
 
-    static bool TryAll2(string[] numbers, long target, string str, int index)
-    {
-        if (index == numbers.Length - 1)
-        {
+    static bool TryAll2(string[] numbers, long target, string str, int index) {
+        if (index == numbers.Length - 1) {
             str += numbers[index];
             return Evalute2(str, target);
         }
@@ -102,47 +101,45 @@ public static class Day7_2 {
         string[] ops = new string[] { "+", "*", "||" };
 
         foreach (string op in ops)
-            if (TryAll2(numbers, target, str + numbers[index] + op, index + 1)) return true;
+            if (TryAll2(numbers, target, str + numbers[index] + op, index + 1))
+                return true;
 
         return false;
     }
-    static bool Evalute2(string exp, long target)
-    {
+
+    static bool Evalute2(string exp, long target) {
         long result = 0;
         long part = 0;
         int op = 0; //0: +, 1: *, 2: ||
-        for (int i = 0; i < exp.Length; i++)
-        {
-            if (exp[i] >= '0' && exp[i] <= '9')
-            {
+        for (int i = 0; i < exp.Length; i++) {
+            if (exp[i] >= '0' && exp[i] <= '9') {
                 part = 10 * part + (int)(exp[i] - '0');
             }
-            else
-            {
+            else {
                 if (op == 0) result += part;
                 else if (op == 1) result *= part;
-                else
-                {
+                else {
                     string s1 = result.ToString();
                     string s2 = part.ToString();
                     string val = s1 + s2;
                     result = Int64.Parse(val);
                 }
+
                 part = 0;
                 if (exp[i] == '+') op = 0;
                 else if (exp[i] == '*') op = 1;
-                else
-                {
+                else {
                     op = 2;
                     i++;
                 }
             }
+
             if (result > target) return false;
         }
+
         if (op == 0) result += part;
         else if (op == 1) result *= part;
-        else
-        {
+        else {
             string s1 = result.ToString();
             string s2 = part.ToString();
             string val = s1 + s2;
