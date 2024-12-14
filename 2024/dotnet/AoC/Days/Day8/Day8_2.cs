@@ -4,7 +4,7 @@ namespace AoC.Days.Day8;
 
 /// <summary>
 /// Day8 used for Day class generation
-/// When using replace Day8 with the day
+/// Credits: https://github.com/mikequinlan/AOC2024/blob/main/Day08.cs
 /// </summary>
 public static class Day8_2 {
 
