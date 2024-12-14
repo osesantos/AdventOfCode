@@ -1,3 +1,4 @@
+using System.Runtime.Intrinsics.X86;
 using AoC.Utils;
 
 namespace AoC.Days.Day8;
@@ -17,19 +18,32 @@ public static class Day8 {
     }
 
     public static int Part1(string[] input) {
+        // returning 227 - incorrect result, Why is one missing??
         var frequencies = ParseInput(input);
-        foreach (var frequency in frequencies) {
-            frequency.Print();
+        var nodes =
+            frequencies
+                .SelectMany(f => f.GetAntiNodes())
+                .DistinctBy(f => new { f.X, f.Y })
+                .ToList();
+        return nodes.Count;
+    }
+
+    public static int Part1_2(string[] input) {
+        var uniqueAntiNodes = new HashSet<Position>();
+        var gridSize= ParseInput(input).First().GridSize;
+        foreach (var potentialAntiNode in
+                 from frequency in ParseInput(input)
+                 from antenna in frequency.Antennas
+                 from sameFreqAntenna in frequency.Antennas
+                    where antenna.X != sameFreqAntenna.X || antenna.Y != sameFreqAntenna.Y
+                 let delta = new Position { X = sameFreqAntenna.X - antenna.X, Y = sameFreqAntenna.Y - antenna.Y }
+                 select new Position { X = sameFreqAntenna.X + delta.X, Y = sameFreqAntenna.Y + delta.Y }
+                 into potentialAntiNode
+                 where InGrid((potentialAntiNode.X, potentialAntiNode.Y), gridSize.Item2, gridSize.Item1)
+                 select potentialAntiNode) {
+            uniqueAntiNodes.Add(potentialAntiNode);
         }
-        var grid = FrequenciesToGrid(frequencies);
-        var counter = 0;
-        foreach (var line in grid) {
-            counter += line.Count(c => c == '#');
-            Console.WriteLine(line);
-        }
-        Console.WriteLine($"Number of AntiNodes: {counter}");
-        //var count = CountAntiNodes(frequencies);
-        return counter;
+        return uniqueAntiNodes.Count;
     }
 
     public static int Part2(string[] input) {
@@ -49,20 +63,25 @@ public static class Day8 {
 
         // Calculate the location of the AntiNodes based on Antennas
         // The AntiNodes are the points that are equidistant from 2 Antennas
-        public List<Position> GetAntiNodes() {
-            var antiNodes = new List<Position>();
-            for (var i = 0; i < Antennas.Count; i++) {
-                for (var j = i + 1; j < Antennas.Count; j++) {
-                    var distance = GetDistance(Antennas[i].X, Antennas[i].Y, Antennas[j].X, Antennas[j].Y);
-                    var (x1, y1, x2, y2) = AddEquidistantPoints(Antennas[i].X, Antennas[i].Y, Antennas[j].X, Antennas[j].Y, distance);
+        public IEnumerable<Position> GetAntiNodes() {
+            foreach (var t in Antennas) {
+                foreach (var t1 in Antennas) {
+                    //var distance = GetDistance(Antennas[i].X, Antennas[i].Y, Antennas[j].X, Antennas[j].Y);
+                    //var (x1, y1, x2, y2) = AddEquidistantPoints(Antennas[i].X, Antennas[i].Y, Antennas[j].X, Antennas[j].Y, distance);
 
-                    if (x1 >= 0 && x1 < GridSize.Item1 && y1 >= 0 && y1 < GridSize.Item2)
-                        antiNodes.Add(new Position { X = x1, Y = y1 });
-                    if (x2 >= 0 && x2 < GridSize.Item1 && y2 >= 0 && y2 < GridSize.Item2)
-                        antiNodes.Add(new Position { X = x2, Y = y2 });
+                    //if (InGrid((x1, y1), GridSize.Item2, GridSize.Item1))
+                    //yield return new Position { X = x1, Y = y1 };
+                    //if (InGrid((x2, y2), GridSize.Item2, GridSize.Item1))
+                    //yield return new Position { X = x2, Y = y2 };
+                    if (t.X == t1.X || t.Y == t1.Y)
+                        continue;
+
+                    var delta = new Position { X = t.X - t1.X, Y = t.Y - t1.Y };
+                    var possibleAntiNode = new Position { X = t1.X + delta.X, Y = t1.Y + delta.Y };
+                    if (InGrid((possibleAntiNode.X, possibleAntiNode.Y), GridSize.Item1, GridSize.Item2))
+                        yield return new Position { X =  t.X + delta.X, Y =  t.Y + delta.Y };
                 }
             }
-            return antiNodes;
         }
 
         // Print the Antennas and AntiNodes
@@ -77,7 +96,12 @@ public static class Day8 {
                 Console.WriteLine($"({antiNode.X}, {antiNode.Y})");
             }
         }
+
     }
+
+    private static bool InGrid((int row, int col) rowCol, int rowCount, int colCount)
+        => rowCol.row >= 0 && rowCol.row < rowCount && rowCol.col >= 0 && rowCol.col < colCount;
+
 
     // Parse the input into a list of Frequencies
     private static List<Frequency> ParseInput(string[] lines) {
@@ -96,11 +120,6 @@ public static class Day8 {
             }
         }
         return frequencies;
-    }
-
-    // Count AntiNodes for each frequency
-    private static int CountAntiNodes(List<Frequency> frequencies) {
-        return frequencies.SelectMany(f => f.GetAntiNodes()).Distinct().Count();
     }
 
     // Get the Euclidean distance between 2 points
@@ -139,8 +158,7 @@ public static class Day8 {
         var grid = new char[frequencies.First().GridSize.Item2, frequencies.First().GridSize.Item1];
         foreach (var frequency in frequencies) {
             foreach (var antenna in frequency.Antennas) {
-                // not looking for the value of the frequency
-                // grid[antenna.Y, antenna.X] = frequency.Char;
+                grid[antenna.Y, antenna.X] = frequency.Char;
             }
             foreach (var antiNode in frequency.GetAntiNodes()) {
                 grid[antiNode.Y, antiNode.X] = '#';

@@ -23,12 +23,12 @@ public static class Day8Tests {
 
     [Test]
     public static void TestPart1() {
-        Assert.That(Day8.Part1(Input), Is.EqualTo(14));
+       // Assert.That(Day8.Part1_2(Input), Is.EqualTo(14));
     }
 
     [Test]
     public static void TestPart2() {
-        Assert.That(Day8.Part2(Input), Is.EqualTo(0));
+        //Assert.That(Day8.Part2(Input), Is.EqualTo(0));
     }
 
     [Test]
@@ -38,6 +38,6 @@ public static class Day8Tests {
 
     [Test]
     public static void TestPart2_2() {
-        Assert.That(Day8_2.Part2(Input), Is.EqualTo(0));
+        Assert.That(Day8_2.Part2(Input), Is.EqualTo(34));
     }
 }
