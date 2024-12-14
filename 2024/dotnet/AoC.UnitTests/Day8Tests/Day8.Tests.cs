@@ -30,4 +30,14 @@ public static class Day8Tests {
     public static void TestPart2() {
         Assert.That(Day8.Part2(Input), Is.EqualTo(0));
     }
+
+    [Test]
+    public static void TestPart1_2() {
+        Assert.That(Day8_2.Part1(Input), Is.EqualTo(14));
+    }
+
+    [Test]
+    public static void TestPart2_2() {
+        Assert.That(Day8_2.Part2(Input), Is.EqualTo(0));
+    }
 }
