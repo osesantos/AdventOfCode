@@ -17,4 +17,9 @@ public static class Day9Tests {
         Assert.That(Day9.Part2(Input), Is.EqualTo(2858));
     }
 
+    [Test]
+    public static void TestPart2_2() {
+        Assert.That(Day9.Part2_2(Input), Is.EqualTo(2858));
+    }
+
 }
