@@ -1,4 +1,3 @@
-using System.Text;
 using AoC.Days.Day9;
 
 namespace Aoc.UnitTests.Day9Tests;
