@@ -41,7 +41,6 @@ public static class Day9 {
     public static long Part2(string[] input) {
         var filesystem = ParseInput(input.First());
         filesystem = DoAggregations(filesystem);
-        Console.WriteLine(string.Join("", filesystem));
         var i = filesystem.Length - 1;
         while (i > 0) {
             var s = filesystem[i];
@@ -66,13 +65,15 @@ public static class Day9 {
             // replace at the leftmost space
             filesystem = ReplaceAtIndex(filesystem, leftMostSpaceIndex, s, extraSpaceToAdd);
             // replace at the previous position
-            filesystem = ReplaceAtIndex(filesystem, i, sb.ToString());
-
-            Console.WriteLine(string.Join("", filesystem));
+            filesystem = ReplaceAtIndex(filesystem, i + 1, sb.ToString());
 
             i--;
         }
-        return CalculateChecksum(filesystem);
+
+        var filesystemString = string.Join("", filesystem);
+        var filesystemArray = filesystemString.ToCharArray().Select(c => c.ToString()).ToArray();
+        Console.WriteLine(string.Join("", filesystemArray));
+        return CalculateChecksum(filesystemArray);
     }
 
     private static string[] ParseInput(string input) {
@@ -142,8 +143,8 @@ public static class Day9 {
 
     private static long CalculateChecksum(string[] filesystem) {
         return filesystem
-            .Where(c => !c.Contains("."))
             .Select((c, i) => (c, i))
+            .Where(ci => ci.c != ".")
             .Sum(ci => (long)(int.Parse(ci.c.ToString()) * ci.i));
     }
 
