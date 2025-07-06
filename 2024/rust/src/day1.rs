@@ -28,10 +28,6 @@ fn parse_lines_to_list(lines: Vec<String>) -> (Vec<usize>, Vec<usize>) {
     (list1, list2)
 }
 
-fn count_in_list(num: usize, list: Vec<usize>) -> usize {
-    list.iter().filter(|x| **x == num).count()
-}
-
 // Test cases
 #[cfg(test)]
 mod tests {
