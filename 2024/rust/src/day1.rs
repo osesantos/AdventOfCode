@@ -3,23 +3,18 @@ use std::usize;
 use crate::utils::get_input_lines;
 
 pub fn part1(lines: Vec<String>) -> usize {
-    let (list1, list2) = parse_lines_to_list(lines);
-    let mut distances: Vec<usize> = Vec::new();
+    let (mut list1, mut list2) = parse_lines_to_list(lines);
+    list1.sort();
+    list2.sort();
 
-    let mut list1_sorted = list1.clone();
-    let mut list2_sorted = list2.clone();
-    list1_sorted.sort();
-    list2_sorted.sort();
-
-    let len = list1_sorted.len();
-    for i in 0..len {
-        distances.push(subtract(list1_sorted[i], list2_sorted[i]).unwrap());
-    }
-
-    distances.iter().sum()
+    list1.iter().enumerate().map(|(i, x)| x.abs_diff(list2[i])).sum()
 }
 
-pub fn part2() {}
+pub fn part2(lines: Vec<String>) -> usize {
+    let (list1, list2) = parse_lines_to_list(lines);
+
+    list1.iter().map(|i| list2.iter().filter(|x| **x == *i).count() * i).sum()
+}
 
 fn parse_lines_to_list(lines: Vec<String>) -> (Vec<usize>, Vec<usize>) {
     let mut list1: Vec<usize> = Vec::new();
@@ -33,13 +28,8 @@ fn parse_lines_to_list(lines: Vec<String>) -> (Vec<usize>, Vec<usize>) {
     (list1, list2)
 }
 
-fn subtract(first: usize, second: usize) -> Result<usize, String> {
-    if first <= second {
-        Ok(second - first)
-    }
-    else {
-        Err(format!("unable to subtract: first: {}, second: {}", first, second))
-    }
+fn count_in_list(num: usize, list: Vec<usize>) -> usize {
+    list.iter().filter(|x| **x == num).count()
 }
 
 // Test cases
@@ -63,14 +53,27 @@ mod tests {
 
     #[test]
     fn test_part1_input() {
-        let result = part1(get_input_lines("1"));
-        println!("{}", result);
+        println!("result: {}", part1(get_input_lines("1")));
         assert_eq!(1, 1)
     }
 
     #[test]
     fn test_part2() {
-        // Add your test logic for part2 here
-        assert_eq!(2 * 2, 4); // Example assertion
+        let lines: &str = "\
+3   4
+4   3
+2   5
+1   3
+3   9
+3   3";
+        let parsed_lines = lines.lines().map(|l| l.to_string()).collect();
+
+        assert_eq!(part2(parsed_lines), 31);
+    }
+
+    #[test]
+    fn test_part2_input() {
+        println!("result: {}", part2(get_input_lines("1")));
+        assert_eq!(1, 1)
     }
 }
