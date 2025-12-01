@@ -22,18 +22,19 @@ impl Rotation {
     }
 
     fn passes_through_zero(&self, current: i32) -> i32 {
-        let rotation = match self.direction {
-            'L' => current - self.degrees,
-            'R' => current + self.degrees,
-            _ => current,
-        };
-        let mut passes = 0;
-        for step in current..=rotation {
-            if step % 100 == 0 {
-                passes += 1;
+        let mut count = 0;
+        let steps = self.degrees / 1; // 1 degree per step
+        for step in 1..=steps {
+            let intermediate_rotation = match self.direction {
+                'L' => (current - step + 100) % 100,
+                'R' => (current + step) % 100,
+                _ => current,
+            };
+            if intermediate_rotation == 0 {
+                count += 1;
             }
         }
-        passes
+        count
     }
 }
 
@@ -71,13 +72,10 @@ pub fn part2(input: Vec<String>) -> String {
 
     let mut current_rotation = 50;
     let mut zero_counter = 0;
+    // Count every time it passes through zero including landing on zero
     for rotation in &rotations {
-        current_rotation = rotation.apply(current_rotation);
-        if current_rotation == 0 {
-            zero_counter += 1;
-        }
-        // Count every time we pass through zero
         zero_counter += rotation.passes_through_zero(current_rotation);
+        current_rotation = rotation.apply(current_rotation);
     }
 
     zero_counter.to_string()
