@@ -35,35 +35,36 @@ impl Range {
         false
     }
 
-    // invalid examples: 55, 6464, 123123
+    // invalid examples: 55, 6464, 123123, 111, 999, 1010
     // invalid if some sequence of digits repeated twice
     // 121212 is invalid because 12 is repeated more than twice
+    // 824824824 is invalid because 824 is repeated more than twice
+    // 56565656 is invalid because 56 is repeated more than twice
     fn is_num_invalid_2(&self, num: u64) -> bool {
-        let num_len = num.to_string().len();
-        if num_len % 2 != 0 {
-            println!("Number {} is valid because its length is odd", num);
-            return false;
-        }
+        let num_str = num.to_string();
+        let num_len = num_str.len();
 
-        let left_half = num
-            .to_string()
-            .chars()
-            .take(num_len / 2)
-            .collect::<String>();
-        let right_half = num
-            .to_string()
-            .chars()
-            .skip(num_len / 2)
-            .take(num_len / 2)
-            .collect::<String>();
-
-        if left_half.len() == right_half.len() && left_half == right_half {
-            if self.is_num_invalid_2(left_half.parse::<u64>().unwrap()) {
-                return false;
+        for seq_len in 1..=(num_len / 2) {
+            if num_len % seq_len != 0 {
+                continue;
             }
-            println!("Invalid number found: {}", num);
-            return true;
+
+            let mut is_invalid = true;
+            let first_seq = &num_str[0..seq_len];
+
+            for i in (0..num_len).step_by(seq_len) {
+                let current_seq = &num_str[i..i + seq_len];
+                if current_seq != first_seq {
+                    is_invalid = false;
+                    break;
+                }
+            }
+
+            if is_invalid {
+                return true;
+            }
         }
+
         false
     }
 
