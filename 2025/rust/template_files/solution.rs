@@ -1,9 +1,9 @@
-pub fn part1(input: &str) -> String {
+pub fn part1(input: Vec<String>) -> String {
     // Implement the logic for part 1 here
     input.to_string()
 }
 
-pub fn part2(input: &str) -> String {
+pub fn part2(input: Vec<String>) -> String {
     // Implement the logic for part 2 here
     input.to_string()
 }
